@@ -1,0 +1,126 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+    <div class="col-md-12">
+        <div class="card">
+            <div class="card-header">
+            <h5 class="card-title m-0"><b>#{{ ticket.protocol }}</b></h5>
+            </div>
+            <div class="card-body">
+            <h6 class="card-title"><b>{{ ticket.short_description }}</b></h6>
+            <p class="card-text">{{ ticket.description }}</p>
+            <p class="card-text"><i class="fas fa-user"></i> {{ ticket.user.first_name }}</p>
+            <p class="card-text"><i class="fas fa-calendar-alt"></i> {{ ticket.created_at }}</p>
+            </div>
+        </div>        
+    </div>
+
+
+    <div class="col-md-12">
+    
+
+    <!-- Main content -->
+    <section class="content">
+      <div class="container-fluid">
+        
+        <!-- Timelime example  -->
+        <div class="row">
+          <div class="col-md-12">
+            <!-- The time line -->
+            <div class="timeline">
+
+                <!-- timeline time label -->
+                <div class="time-label">
+                    <span class="bg-red">{{ ticket.created_at|date:"d M Y" }}</span>
+                </div>
+                <!-- /.timeline-label -->
+                <!-- timeline item -->
+                <div>
+                    <i class="fas fa-exclamation-triangle bg-red"></i>
+                    <div class="timeline-item">
+                    <span class="time"><i class="fas fa-clock"></i> {{ ticket.created_at|date:"H:i" }}</span>
+                    <h3 class="timeline-header"><a href="#">{{ ticket.user.first_name }}:</a> {{ ticket.short_description }}</h3>
+
+                    <div class="timeline-body">
+                        {{ ticket.description }}
+                    </div>
+                    <!--
+                        <div class="timeline-footer">
+                            <a class="btn btn-primary btn-sm">Read more</a>
+                            <a class="btn btn-danger btn-sm">Delete</a>
+                        </div>
+                    -->
+                    
+                    </div>
+                </div>
+                <!-- END timeline item -->   
+
+
+              {% for action in ticket.actions.all %}
+
+
+                <!-- timeline time label -->
+                <div class="time-label">
+                    <span class="bg-info">{{ action.created_at|date:"d M Y" }}</span>
+                </div>
+                <!-- /.timeline-label -->
+                <!-- timeline item -->
+                <div>
+                    <i class="fas fa-info-circle bg-info"></i>
+                    <div class="timeline-item">
+                    <span class="time"><i class="fas fa-clock"></i> {{ action.created_at|date:"H:i" }}</span>
+                    <h3 class="timeline-header"><a href="#">{{ action.user.first_name }}:</a> {{ action.short_description }}</h3>
+
+                    <div class="timeline-body">
+                        {{ action.description }}
+                    </div>
+                    <!--
+                        <div class="timeline-footer">
+                            <a class="btn btn-primary btn-sm">Read more</a>
+                            <a class="btn btn-danger btn-sm">Delete</a>
+                        </div>
+                    -->
+                    
+                    </div>
+                </div>
+                <!-- END timeline item -->   
+
+                
+
+               {% endfor %}
+
+               
+              <div>
+                <i class="fas fa-clock bg-gray"></i>
+              </div>
+            </div>
+          </div>
+          <!-- /.col -->
+        </div>
+      </div>
+      <!-- /.timeline -->
+
+    </section>
+    <!-- /.content -->
+  </div>
+
+       
+    <!-- Timelime example  -->
+    <div class="col-md-12"> 
+        <div class="row">
+            <div class="col-md-12">            
+                <a href="" class="btn btn-danger float-right m-1 col-md-2"><i class="fas fa-times"></i> Encerrar Ticket</a>
+                <a href="" class="btn btn-info float-right m-1 col-md-2"><i class="fas fa-edit"></i> Editar Ticket</a>
+                <a href="" class="btn btn-info float-right m-1 col-md-2"><i class="fas fa-plus"></i> Nova Ação</a>
+            </div>
+        </div>
+    </div>
+ 
+ 
+
+  
+
+
+
+{% endblock %}

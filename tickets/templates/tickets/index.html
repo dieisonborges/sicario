@@ -1,0 +1,95 @@
+{% extends "base.html" %}
+
+{% block content %}
+    <div class="row">
+          <div class="col-12">
+            <div class="card">
+              <div class="card-header">
+                <h3 class="card-title"><i class="fas fa-tasks"></i> Tickets <a href="{% url 'tickets:create' %}" class="btn btn-info btn-xs"><i class="fas fa-plus"></i> Novo</a></h3> 
+                <div class="card-tools">
+                  <div class="input-group input-group-sm" style="width: 150px;">
+                    <input type="text" name="table_search" class="form-control float-right" placeholder="Buscar">
+
+                    <div class="input-group-append">
+                      <button type="submit" class="btn btn-default"><i class="fas fa-search"></i></button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <!-- /.card-header -->
+              <div class="card-body table-responsive p-0">
+                <table class="table table-hover text-nowrap">
+                  <thead>
+                    <tr>
+                      <th>#</th>
+                      <th>Criado por</th>
+                      <th>Protocolo</th>
+                      <th>Status</th>
+                      <th>Título</th>
+                      <th>Criado em</th>
+                      <th>Última Ação</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {% if latest_ticket_list %}                        
+                        {% for ticket in latest_ticket_list %}
+                            <tr> 
+                                <td>
+                                    <a href="{% url 'tickets:read' ticket.id %}">
+                                        {{ ticket.id }}
+                                    </a>
+                                </td>                               
+                                <td>
+                                    <a href="{% url 'tickets:read' ticket.id %}">
+                                        {{ ticket.user.first_name }}
+                                    </a>
+                                </td>
+                                <td>
+                                    <a href="{% url 'tickets:read' ticket.id %}">
+                                        {{ ticket.protocol }}
+                                    </a>
+                                </td>
+                                <td>
+                                    <a href="{% url 'tickets:read' ticket.id %}">
+                                      {% if ticket.status %}
+                                        <span class="badge badge-danger">Aberto</span>
+                                      {% else %}
+                                        <span class="badge badge-success">Fechado</span>
+                                      {% endif %}
+                                    </a>
+                                </td>
+                                <td>
+                                    <a href="{% url 'tickets:read' ticket.id %}">
+                                        {{ ticket.short_description }}
+                                    </a>
+                                </td>
+                                <td>
+                                    <a href="{% url 'tickets:read' ticket.id %}">
+                                        {{ ticket.created_at|date:"d M Y" }}
+                                    </a>
+                                </td>
+                                <td>
+                                    <a href="/tickets/{{ ticket.id }}/">
+                                        {{ ticket.actions.last.short_description }} em
+                                        {{ ticket.actions.last.created_at|date:"d M Y" }}
+                                    </a>
+                                </td>
+                            </tr>
+                        {% endfor %}                        
+                    {% else %}
+                        <tr>
+                            <td colspan="5">Nenhum Ticket Encontrado.</td>                            
+                        </tr>
+                    {% endif %}                    
+                    
+                  </tbody>
+                </table>
+              </div>
+              <!-- /.card-body -->
+            </div>
+            <!-- /.card -->
+          </div>
+        </div>
+        <!-- /.row -->
+    
+{% endblock %}
