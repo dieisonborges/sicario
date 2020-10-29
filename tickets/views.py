@@ -31,6 +31,8 @@ def create(request):
         form = TicketForm(request.POST)
         if form.is_valid():
             f = form.save(commit=False)
+            f.status = True
+            f.protocol = "JKSHKS"
             f.save()
             messages.success(request, 'Armazenado com sucesso')        
     form = TicketForm()
