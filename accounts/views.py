@@ -9,8 +9,24 @@ from django.utils.http import urlsafe_base64_encode
 from django.contrib.auth.tokens import default_token_generator
 from django.utils.encoding import force_bytes
 from django.contrib.auth import logout
+from django.contrib.auth.models import User
+
+from .forms import UserForm
 
 # Create your views here.
+
+def add_user(request):
+	template_name = 'create_update.html'
+	context = {}
+	if request.method == 'POST':
+		form = UserForm(request.POST)
+		if form.is_valid():
+			f = form.save(commit=False)
+			f.set_password(f.password)
+			f.save()
+	form = UserForm()
+	context['form'] = form
+	return render(request, template_name, context)
 
 def logout_view(request):
     logout(request)
