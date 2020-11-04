@@ -1,30 +1,94 @@
-from django.shortcuts import render
-from django.http import HttpResponse
+from django.shortcuts import render, get_object_or_404
+from django.http import HttpResponse, Http404, HttpResponseRedirect
 from django.template import loader
-from django.http import Http404
-from django.shortcuts import get_object_or_404, render
 from django.core import validators
 from django.contrib import messages
+from django.urls import reverse
 
 from .models import Ticket, Action
-from .forms import TicketForm
+from .forms import TicketForm, ActionForm
+
+from .utils import random_protocol_generate
 
 
 # Create your views here.
 
-def index(request):    
-    latest_ticket_list = Ticket.objects.order_by('-created_at')[:5]
+def index_tickets(request):    
+    latest_ticket_list = Ticket.objects.order_by('-created_at')
     template = loader.get_template('tickets/index.html')
     context = {
         'latest_ticket_list': latest_ticket_list,
     }
     return HttpResponse(template.render(context, request))
 
-def read(request, ticket_id):
+def create_ticket(request):
+    template_name = 'tickets/create_update.html'
+    context = {}
+    if request.method == 'POST':
+        form = TicketForm(request.POST)
+        if form.is_valid():
+            f = form.save(commit=False)
+            f.user = request.user
+            f.protocol = random_protocol_generate()
+            f.status = True #Open
+            f.save()
+            messages.success(request, 'Adicionado com sucesso!')
+    form = TicketForm()
+    context['form'] = form
+    return render(request, template_name, context)
+
+def read_ticket(request, ticket_id):
     ticket = get_object_or_404(Ticket, pk=ticket_id)
     return render(request, 'tickets/read.html', {'ticket': ticket})
 
-def create(request):
+def update_ticket(request, ticket_id):
+    template_name = 'tickets/create_update.html'
+    context = {}
+    ticket = get_object_or_404(Ticket, id=ticket_id, user=request.user)
+    if request.method == 'POST':
+        form = TicketForm(request.POST, instance=ticket)
+        if form.is_valid():
+            form.save()
+            messages.success(request, 'Modificado com sucesso!')        
+            return HttpResponseRedirect(reverse('tickets:read_ticket', kwargs={'ticket_id': ticket_id}))
+    form = TicketForm(instance=ticket)
+    context['form'] = form
+    return render(request, template_name, context)
+
+def delete_ticket(request, ticket_id):
+    ticket = get_object_or_404(Ticket, id=ticket_id)
+    ticket.delete()
+    messages.success(request, 'Removido com sucesso!')        
+    return HttpResponseRedirect(reverse('tickets:index_tickets'))
+
+def close_ticket(request, ticket_id):
+    ticket = get_object_or_404(Ticket, id=ticket_id)
+    ticket.status = False #Close Ticket
+    ticket.save()
+    messages.success(request, 'Encerrado com sucesso!')        
+    return HttpResponseRedirect(reverse('tickets:read_ticket', kwargs={'ticket_id': ticket_id}))
+
+def open_ticket(request, ticket_id):
+    ticket = get_object_or_404(Ticket, id=ticket_id)
+    ticket.status = True #Open Ticket
+    ticket.save()
+    messages.success(request, 'Reaberto com sucesso!')        
+    return HttpResponseRedirect(reverse('tickets:read_ticket', kwargs={'ticket_id': ticket_id}))
+
+
+
+
+
+"""
+def list_categories(request):
+    template_name = 'tasks/list_categories'
+    categories = category.objects.filter(user=request.user)
+    context = {
+        'categories: categories
+    }
+    return render(request, template_name, context)
+
+def create_ticket(request):
     template_name = 'tickets/create.html'
     context = {}
     if request.method == 'POST':
@@ -38,3 +102,4 @@ def create(request):
     form = TicketForm()
     context['form'] = form
     return render(request, template_name, context)
+"""

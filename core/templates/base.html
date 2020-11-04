@@ -100,7 +100,7 @@
                with font-awesome or any other icon font library -->        
                     
           <li class="nav-item">
-            <a href="{% url 'tickets:index' %}" class="nav-link">
+            <a href="{% url 'tickets:index_tickets' %}" class="nav-link">
               <i class="nav-icon fas fa-tasks"></i>
               <p>
                 Tickets
@@ -120,19 +120,11 @@
   <div class="content-wrapper">
     <!-- Content Header (Page header) -->
     <div class="content-header">
-      <div class="container-fluid">        
+      <div class="container-fluid"> 
+        
+        {% include 'messages.html' %}
 
-        {% if messages %}
-            {% for message in messages %}
-                <div class="alert alert-danger alert-dismissible">
-                    <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
-                    <h5><i class="icon fas fa-ban"></i> Alert!</h5>
-                    {{ message }}
-                </div>
-            {% endfor %}            
-        {% endif %}
-
-        {% block content %}{% endblock %}
+        {% block content %}{% endblock content %}
         
       </div><!-- /.container-fluid -->
     </div>
@@ -199,5 +191,11 @@
 <script src="{% static 'bower_components/admin-lte/dist/js/pages/dashboard.js' %}"></script>
 <!-- AdminLTE for demo purposes -->
 <script src="{% static 'bower_components/admin-lte/dist/js/demo.js' %}"></script>
+
+{% block scripts %}{% endblock scripts %}
+
+
+
 </body>
 </html>
+

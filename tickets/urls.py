@@ -4,7 +4,11 @@ from . import views
 
 app_name = 'tickets'
 urlpatterns = [
-    path('', views.index, name='index'),
-    path('<int:ticket_id>/', views.read, name='read'),
-    path('create/', views.create, name='create'),
+    path('', views.index_tickets, name='index_tickets'),
+    path('criar/ticket/', views.create_ticket, name='create_ticket'),
+    path('<int:ticket_id>/', views.read_ticket, name='read_ticket'),    
+    path('editar/<int:ticket_id>/', views.update_ticket, name='update_ticket'),
+    path('delete/<int:ticket_id>/', views.delete_ticket, name='delete_ticket'),
+    path('close/<int:ticket_id>/', views.close_ticket, name='close_ticket'),
+    path('open/<int:ticket_id>/', views.open_ticket, name='open_ticket'),
 ]

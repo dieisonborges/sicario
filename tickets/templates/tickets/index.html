@@ -5,7 +5,7 @@
           <div class="col-12">
             <div class="card">
               <div class="card-header">
-                <h3 class="card-title"><i class="fas fa-tasks"></i> Tickets <a href="{% url 'tickets:create' %}" class="btn btn-info btn-xs"><i class="fas fa-plus"></i> Novo</a></h3> 
+                <h3 class="card-title"><i class="fas fa-tasks"></i> Tickets <a href="{% url 'tickets:create_ticket' %}" class="btn btn-info btn-xs"><i class="fas fa-plus"></i> Novo</a></h3> 
                 <div class="card-tools">
                   <div class="input-group input-group-sm" style="width: 150px;">
                     <input type="text" name="table_search" class="form-control float-right" placeholder="Buscar">
@@ -35,22 +35,22 @@
                         {% for ticket in latest_ticket_list %}
                             <tr> 
                                 <td>
-                                    <a href="{% url 'tickets:read' ticket.id %}">
+                                    <a href="{% url 'tickets:read_ticket' ticket.id %}">
                                         {{ ticket.id }}
                                     </a>
                                 </td>                               
                                 <td>
-                                    <a href="{% url 'tickets:read' ticket.id %}">
+                                    <a href="{% url 'tickets:read_ticket' ticket.id %}">
                                         {{ ticket.user.first_name }}
                                     </a>
                                 </td>
                                 <td>
-                                    <a href="{% url 'tickets:read' ticket.id %}">
+                                    <a href="{% url 'tickets:read_ticket' ticket.id %}">
                                         {{ ticket.protocol }}
                                     </a>
                                 </td>
                                 <td>
-                                    <a href="{% url 'tickets:read' ticket.id %}">
+                                    <a href="{% url 'tickets:read_ticket' ticket.id %}">
                                       {% if ticket.status %}
                                         <span class="badge badge-danger">Aberto</span>
                                       {% else %}
@@ -59,12 +59,12 @@
                                     </a>
                                 </td>
                                 <td>
-                                    <a href="{% url 'tickets:read' ticket.id %}">
+                                    <a href="{% url 'tickets:read_ticket' ticket.id %}">
                                         {{ ticket.short_description }}
                                     </a>
                                 </td>
                                 <td>
-                                    <a href="{% url 'tickets:read' ticket.id %}">
+                                    <a href="{% url 'tickets:read_ticket' ticket.id %}">
                                         {{ ticket.created_at|date:"d M Y" }}
                                     </a>
                                 </td>

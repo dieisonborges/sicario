@@ -8,19 +8,17 @@
         {{ form.subject.errors }}
         {{ form.subject.label_tag }}
         {{ form.subject }}
-    </div>
-
-    {% include 'messages.html' %}
+    </div>    
 
     <div class="card card-default">
         <div class="card-header">
-        <h3 class="card-title"><i class="fas fa-tasks"></i> Novo Ticket</h3>
+        <h3 class="card-title"><i class="fas fa-tasks"></i> Ticket</h3>
         </div>
         <!-- /.card-header -->
         <!-- form start -->
-        <form role="form" method="POST" action=".">
-        
+        <form method="POST" action=".">
         {% csrf_token %} 
+        
         {{ form.non_field_errors }}
         <div class="card-body">
             <div class="form-group">

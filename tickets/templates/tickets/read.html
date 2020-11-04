@@ -5,13 +5,21 @@
     <div class="col-md-12">
         <div class="card">
             <div class="card-header">
-            <h5 class="card-title m-0"><b>#{{ ticket.protocol }}</b></h5>
+            <h5 class="card-title m-0"><b>Ticket </b>#{{ ticket.protocol }}</h5>
+            
+            {% if ticket.status %}
+                <h4><span class="badge badge-danger float-right">Aberto</span></h4>
+            {% else %}
+                <h4><span class="badge badge-success float-right">Fechado</span></h4>
+            {% endif %}
+            
             </div>
             <div class="card-body">
             <h6 class="card-title"><b>{{ ticket.short_description }}</b></h6>
             <p class="card-text">{{ ticket.description }}</p>
-            <p class="card-text"><i class="fas fa-user"></i> {{ ticket.user.first_name }}</p>
-            <p class="card-text"><i class="fas fa-calendar-alt"></i> {{ ticket.created_at }}</p>
+            <p class="card-text"><i class="fas fa-user"></i> Criado por: <b>{{ ticket.user.first_name }}</b></p>
+            <p class="card-text"><i class="fas fa-calendar-alt"></i> Criado em: <b>{{ ticket.created_at }}</b></p>
+            <p class="card-text"><i class="fas fa-calendar-alt"></i> Alterado em: <b>{{ ticket.created_at }}</b></p>
             </div>
         </div>        
     </div>
@@ -32,7 +40,7 @@
 
                 <!-- timeline time label -->
                 <div class="time-label">
-                    <span class="bg-red">{{ ticket.created_at|date:"d M Y" }}</span>
+                    <span class="bg-red"><small>Aberto em: </small>{{ ticket.created_at|date:"d M Y" }}</span>
                 </div>
                 <!-- /.timeline-label -->
                 <!-- timeline item -->
@@ -109,18 +117,59 @@
     <!-- Timelime example  -->
     <div class="col-md-12"> 
         <div class="row">
-            <div class="col-md-12">            
-                <a href="" class="btn btn-danger float-right m-1 col-md-2"><i class="fas fa-times"></i> Encerrar Ticket</a>
-                <a href="" class="btn btn-info float-right m-1 col-md-2"><i class="fas fa-edit"></i> Editar Ticket</a>
+            <div class="col-md-12">
+                {% if ticket.status  %}
+                <a href="{% url 'tickets:delete_ticket' ticket.id %}" class="btn btn-danger float-right m-1 col-md-2 confirm-delete-ticket" data-toggle="modal" data-target="#confirmDeleteTicketModal" id="deleteButton-{{ ticket.id }}"><i class="far fa-trash-alt"></i> Excluir Ticket</a>
+                <a href="{% url 'tickets:close_ticket' ticket.id %}" class="btn btn-info float-right m-1 col-md-2 confirm-close-ticket" data-toggle="modal" data-target="#confirmCloseTicketModal" id="closeButton-{{ ticket.id }}"><i class="fas fa-times"></i> Encerrar Ticket</a>
+
+                    {% if ticket.user == user  %}
+                    <a href="{% url 'tickets:update_ticket' ticket.id %}" class="btn btn-info float-right m-1 col-md-2"><i class="fas fa-edit"></i> Editar Ticket</a>
+                    {% endif %}
                 <a href="" class="btn btn-info float-right m-1 col-md-2"><i class="fas fa-plus"></i> Nova Ação</a>
+                {% else %}
+                <a href="{% url 'tickets:open_ticket' ticket.id %}" class="btn btn-info float-right m-1 col-md-2 confirm-open-ticket" data-toggle="modal" data-target="#confirmOpenTicketModal" id="openButton-{{ ticket.id }}"><i class="fas fa-redo"></i> Reabrir Ticket</a>
+                {% endif %}                
             </div>
         </div>
     </div>
- 
- 
 
-  
+    {% include 'tickets/modals.html' %}
 
+{% endblock content %}
 
+{% block scripts %}
 
-{% endblock %}
+<!-- Modal Open Ticket -->
+<script> 
+    $(document).on('click', '.confirm-open-ticket', function(){
+      $('#confirmOpenTicketModal').attr('caller-id', $(this).attr('id'));
+    })
+    $(document).on('click', '#confirmOpenTicketButtonModal', function(){
+      var caller = $('#confirmOpenTicketButtonModal').closest('.modal').attr('caller-id');
+      window.location = $('#'.concat(caller)).attr('href');
+    })
+  </script>
+
+<!-- Modal Close Ticket -->
+<script> 
+  $(document).on('click', '.confirm-close-ticket', function(){
+    $('#confirmCloseTicketModal').attr('caller-id', $(this).attr('id'));
+  })
+  $(document).on('click', '#confirmCloseTicketButtonModal', function(){
+    var caller = $('#confirmCloseTicketButtonModal').closest('.modal').attr('caller-id');
+    window.location = $('#'.concat(caller)).attr('href');
+  })
+</script>
+
+<!-- Modal Delete Ticket -->
+<script> 
+    $(document).on('click', '.confirm-delete-ticket', function(){
+      $('#confirmDeleteTicketModal').attr('caller-id', $(this).attr('id'));
+    })
+    $(document).on('click', '#confirmDeleteTicketButtonModal', function(){
+      var caller = $('#confirmDeleteTicketButtonModal').closest('.modal').attr('caller-id');
+      window.location = $('#'.concat(caller)).attr('href');
+    })
+  </script>
+
+{% endblock scripts %}
