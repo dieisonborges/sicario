@@ -75,6 +75,26 @@ def open_ticket(request, ticket_id):
     messages.success(request, 'Reaberto com sucesso!')        
     return HttpResponseRedirect(reverse('tickets:read_ticket', kwargs={'ticket_id': ticket_id}))
 
+def create_action(request, ticket_id):
+    template_name = 'actions/create_update.html'
+    context = {}
+    if request.method == 'POST':
+        form = ActionForm(request.POST)
+        if form.is_valid():
+            f = form.save(commit=False)
+            f.ticket_id = ticket_id
+            f.user = request.user
+            f.save()
+            messages.success(request, 'Adicionado com sucesso!')        
+            return HttpResponseRedirect(reverse('tickets:read_ticket', kwargs={'ticket_id': ticket_id}))
+        else:
+            messages.warning(request, 'Houve um problema tente novamente')
+    form = ActionForm()
+    context['form'] = form
+    context['ticket_id'] = ticket_id
+    print(form.__dict__)
+    return render(request, template_name, context)
+
 
 
 

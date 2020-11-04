@@ -11,10 +11,10 @@ class TicketForm(forms.ModelForm):
         fields = ('short_description', 'description')
         #exclude = ()
 
-class ActionForm(forms.ModelForm):      
+class ActionForm(forms.ModelForm): 
 
     class Meta:
-        model = Action
+        model = Action        
         fields = ('short_description', 'description')
         #exclude = ()
 
@@ -25,3 +25,5 @@ class ActionForm(forms.ModelForm):
     status = False
     short_description = forms.CharField(label='Título', max_length=50)    
     description = forms.CharField(label='Descrição', widget=forms.Textarea)"""
+
+    
