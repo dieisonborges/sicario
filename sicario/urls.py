@@ -20,7 +20,7 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('', include('core.urls')),
     path('tickets/', include('tickets.urls'), name='tickets'),
-    path('accounts/', include('accounts.urls')),
+    path('accounts/', include('accounts.urls'), name='accounts'),
 ]
 
 """

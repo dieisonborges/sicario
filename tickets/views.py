@@ -1,18 +1,21 @@
 from django.shortcuts import render, get_object_or_404
 from django.http import HttpResponse, Http404, HttpResponseRedirect
+from django.contrib.auth.decorators import login_required
 from django.template import loader
 from django.core import validators
 from django.contrib import messages
 from django.urls import reverse
 
 from .models import Ticket, Action
+
 from .forms import TicketForm, ActionForm
 
 from .utils import random_protocol_generate
 
+from core.decorators import require_group
 
 # Create your views here.
-
+@login_required
 def index_tickets(request):    
     latest_ticket_list = Ticket.objects.order_by('-created_at')
     template = loader.get_template('tickets/index.html')
@@ -21,6 +24,7 @@ def index_tickets(request):
     }
     return HttpResponse(template.render(context, request))
 
+@login_required
 def create_ticket(request):
     template_name = 'tickets/create_update.html'
     context = {}
@@ -37,10 +41,12 @@ def create_ticket(request):
     context['form'] = form
     return render(request, template_name, context)
 
+@login_required
 def read_ticket(request, ticket_id):
     ticket = get_object_or_404(Ticket, pk=ticket_id)
     return render(request, 'tickets/read.html', {'ticket': ticket})
 
+@login_required
 def update_ticket(request, ticket_id):
     template_name = 'tickets/create_update.html'
     context = {}
@@ -55,12 +61,14 @@ def update_ticket(request, ticket_id):
     context['form'] = form
     return render(request, template_name, context)
 
+@login_required
 def delete_ticket(request, ticket_id):
     ticket = get_object_or_404(Ticket, id=ticket_id)
     ticket.delete()
     messages.success(request, 'Removido com sucesso!')        
     return HttpResponseRedirect(reverse('tickets:index_tickets'))
 
+@login_required
 def close_ticket(request, ticket_id):
     ticket = get_object_or_404(Ticket, id=ticket_id)
     ticket.status = False #Close Ticket
@@ -68,6 +76,7 @@ def close_ticket(request, ticket_id):
     messages.success(request, 'Encerrado com sucesso!')        
     return HttpResponseRedirect(reverse('tickets:read_ticket', kwargs={'ticket_id': ticket_id}))
 
+@login_required
 def open_ticket(request, ticket_id):
     ticket = get_object_or_404(Ticket, id=ticket_id)
     ticket.status = True #Open Ticket
@@ -75,6 +84,7 @@ def open_ticket(request, ticket_id):
     messages.success(request, 'Reaberto com sucesso!')        
     return HttpResponseRedirect(reverse('tickets:read_ticket', kwargs={'ticket_id': ticket_id}))
 
+@login_required
 def create_action(request, ticket_id):
     template_name = 'actions/create_update.html'
     context = {}
