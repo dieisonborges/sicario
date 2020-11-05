@@ -5,8 +5,11 @@ from django.contrib.auth.models import User
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.forms import PasswordChangeForm
+from django.contrib.auth import update_session_auth_hash
 
-from .forms import UserForm
+from .forms import UserForm, UserProfileForm
+
+from .models import UserProfile
 
 # Create your views here.
 def login_user(request):
@@ -59,3 +62,30 @@ def password_reset_user(request):
 	form = PasswordChangeForm(user=request.user)
 	context['form'] = form
 	return render(request, template_name, context)
+
+@login_required
+def create_profile_user(request):
+	template_name = 'create_update_user_profile.html'
+	context = {}
+	if request.method == 'POST':
+		form = UserProfileForm(request.POST, request.FILES)
+		if form.is_valid():
+			f = form.save(commit=False)
+			f.user = request.user
+			f.save()
+			messages.success(request, 'Adicionado com sucesso!')
+		else:
+			messages.error(request, 'Houve um erro!')      
+	form = UserProfileForm()
+	context['form'] = form
+	return render(request, template_name, context)
+
+@login_required
+def read_profile_user(request):
+	template_name = 'read_user_profile.html'	
+	profile = UserProfile.objects.get(user=request.user)	
+	context = {
+		'profile': profile
+	}
+	return render(request, template_name, context)
+	

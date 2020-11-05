@@ -60,7 +60,8 @@
           <span class="badge badge-info navbar-badge">2</span>
         </a>
         <div class="dropdown-menu dropdown-menu-sm dropdown-menu-right">
-          
+          <a href="{% url 'accounts:create_profile_user' %}" class="dropdown-item text-sm"><i class="fas fa-user"></i> Perfil</a> 
+          <div class="dropdown-divider"></div>
           <a href="{% url 'accounts:password_reset_user' %}" class="dropdown-item text-sm"><i class="fas fa-key"></i> Alterar Senha</a> 
           <div class="dropdown-divider"></div>
           <a href="{% url 'accounts:logout_user' %}" class="dropdown-item text-sm text-red"><i class="fas fa-times"></i> Sair</a>           
@@ -84,11 +85,15 @@
     <div class="sidebar">
       <!-- Sidebar user panel (optional) -->
       <div class="user-panel mt-3 pb-3 mb-3 d-flex">
-        <div class="image">
+        <div class="image">          
+          {% if user.profile.photo %}
+          <img src="{{ user.profile.photo.url }}" class="img-circle elevation-2" alt="User Image">
+          {% else %}
           <img src="{% static 'img/user.png' %}" class="img-circle elevation-2" alt="User Image">
+          {% endif %}
         </div>
         <div class="info">
-          <a href="#" class="d-block">Usuário <small><i class="fas fa-tools"></small></i></a>
+          <a href=" {% url 'accounts:read_profile_user' %} " class="d-block">Usuário <small><i class="fas fa-tools"></small></i></a>
           
         </div>
       </div>
