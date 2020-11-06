@@ -7,11 +7,11 @@ db.sqlite3
 media
 
 #Media
-media/
+media/*
 
 #StaticFiles
-staticfiles/
-static/
+staticfiles/*
+static/*
 
 # Backup files # 
 *.bak 
