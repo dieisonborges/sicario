@@ -1,7 +1,10 @@
 from django.conf import settings
 from django.db import models
+from django.utils import timezone
+import os
+from uuid import uuid4
 
-from .utils import random_protocol_generate
+from .utils import random_protocol_generate, path_and_rename
 
 # Create your models here.
 
@@ -12,8 +15,9 @@ class Ticket(models.Model):
     status = models.BooleanField('Status', default=False)#False=Close True=Open
     short_description = models.CharField('Título', max_length=50)
     description = models.TextField('Descrição')
+    docfile = models.FileField(upload_to=path_and_rename)
     created_at = models.DateTimeField('Criado em', auto_now_add=True)
-    updated_at = models.DateTimeField('Alterado em', auto_now=True)    
+    updated_at = models.DateTimeField('Alterado em', auto_now=True)
 
     class Meta:
         verbose_name = "Ticket"
@@ -30,6 +34,7 @@ class Action(models.Model):
     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
     short_description = models.CharField('Título',max_length=50)
     description = models.TextField('Descrição')
+    docfile = models.FileField(upload_to=path_and_rename)
     created_at = models.DateTimeField('Criado em', auto_now_add=True)
     updated_at = models.DateTimeField('Alterado em',auto_now=True)
 
