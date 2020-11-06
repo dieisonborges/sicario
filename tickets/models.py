@@ -1,8 +1,7 @@
 from django.conf import settings
 from django.db import models
 from django.utils import timezone
-import os
-from uuid import uuid4
+import filetype
 
 from .utils import random_protocol_generate, path_and_rename
 
@@ -15,7 +14,7 @@ class Ticket(models.Model):
     status = models.BooleanField('Status', default=False)#False=Close True=Open
     short_description = models.CharField('Título', max_length=50)
     description = models.TextField('Descrição')
-    docfile = models.FileField(upload_to=path_and_rename)
+    docfile = models.FileField('Arquivo', upload_to=path_and_rename, null=True)
     created_at = models.DateTimeField('Criado em', auto_now_add=True)
     updated_at = models.DateTimeField('Alterado em', auto_now=True)
 
@@ -24,6 +23,14 @@ class Ticket(models.Model):
         verbose_name_plural = "Tickets"
         ordering = ['id']
     
+    def DocFileType(self):
+        return filetype.guess(self.docfile.path)
+    
+    def DocFileTypeGroup(self):
+        group = filetype.guess(self.docfile.path).mime
+        group = group.split("/")
+        return group[0]
+
     #For DjangoAdmin
     def __str__(self):
         return self.short_description
@@ -34,7 +41,7 @@ class Action(models.Model):
     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
     short_description = models.CharField('Título',max_length=50)
     description = models.TextField('Descrição')
-    docfile = models.FileField(upload_to=path_and_rename)
+    docfile = models.FileField('Arquivo', upload_to=path_and_rename, null=True)
     created_at = models.DateTimeField('Criado em', auto_now_add=True)
     updated_at = models.DateTimeField('Alterado em',auto_now=True)
 
@@ -42,6 +49,14 @@ class Action(models.Model):
         verbose_name = "Ação"
         verbose_name_plural = "Ações"
         ordering = ['id']
+    
+    def DocFileType(self):
+        return filetype.guess(self.docfile.path)
+    
+    def DocFileTypeGroup(self):
+        group = filetype.guess(self.docfile.path).mime
+        group = group.split("/")
+        return group[0]
     
     #For DjangoAdmin
     def __str__(self):

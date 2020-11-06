@@ -1,6 +1,6 @@
 from datetime import datetime
-import string
-import random
+import string, random, os
+from uuid import uuid4
 
 def random_protocol_generate(size=6):
     current_time = datetime.now()
@@ -9,7 +9,7 @@ def random_protocol_generate(size=6):
     return year+("".join(random.choice(chars) for x in range(size)))
 
 def path_and_rename(instance, filename):
-    upload_to = 'uploads'
+    upload_to = 'tickets'
     ext = filename.split('.')[-1]
     # get filename
     if instance.pk:

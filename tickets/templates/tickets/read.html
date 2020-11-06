@@ -4,24 +4,50 @@
 
     <div class="col-md-12">
         <div class="card">
-            <div class="card-header">
-            <h5 class="card-title m-0"><b>Ticket </b>#{{ ticket.protocol }}</h5>
+          <div class="card-header">
+          <h5 class="card-title m-0"><b>Ticket </b>#{{ ticket.protocol }}</h5>
+          
+          {% if ticket.status %}
+              <h4><span class="badge badge-danger float-right">Aberto</span></h4>
+          {% else %}
+              <h4><span class="badge badge-success float-right">Fechado</span></h4>
+          {% endif %}
+          
+          </div>
+          <div class="card-body">
+            <h6 class="card-title mb-3">
+              <b>{{ ticket.short_description }}</b>
+            </h6>
+            <p class="card-text">{{ ticket.description }}</p>             
+            </p>
             
-            {% if ticket.status %}
-                <h4><span class="badge badge-danger float-right">Aberto</span></h4>
-            {% else %}
-                <h4><span class="badge badge-success float-right">Fechado</span></h4>
+            {% if ticket.docfile %}
+
+                {% if ticket.DocFileType.mime == 'application/pdf' %}
+                <a href="{{ ticket.docfile.url }}" class="btn btn-default btn-lg" target="_blank">
+                  <i class="fas fa-file-pdf"></i> {{ ticket.DocFileType.extension.upper }}
+                </a>
+                {% elif ticket.DocFileTypeGroup == 'image' %}
+                <a href="{{ ticket.docfile.url }}" target="_blank">
+                  <img src="{{ ticket.docfile.url }}" width="200px">
+                </a>               
+                {% else %}                  
+                  <a href="{{ ticket.docfile.url }}" class="btn btn-default btn-lg" target="_blank">
+                    <i class="far fa-file"></i> {{ ticket.DocFileType.extension.upper }}
+                  </a>
+                {% endif %}  
+              
             {% endif %}
-            
-            </div>
-            <div class="card-body">
-            <h6 class="card-title"><b>{{ ticket.short_description }}</b></h6>
-            <p class="card-text">{{ ticket.description }}</p>
-            <p class="card-text"><i class="fas fa-user"></i> Criado por: <b>{{ ticket.user.first_name }}</b></p>
-            <p class="card-text"><i class="fas fa-calendar-alt"></i> Criado em: <b>{{ ticket.created_at }}</b></p>
-            <p class="card-text"><i class="fas fa-calendar-alt"></i> Alterado em: <b>{{ ticket.created_at }}</b></p>
-            </div>
-        </div>        
+              
+          </div>
+          <div class="card-footer">
+              <p class="card-text">
+                <i class="fas fa-user"></i> Criado por <b>{{ ticket.user.first_name }}</b> 
+                em <b>{{ ticket.created_at }}</b>, última alteração em: <b>{{ ticket.created_at }}</b>
+              </p>
+          </div>
+        </div>
+               
     </div>
 
 
@@ -81,14 +107,42 @@
                     <h3 class="timeline-header"><a href="#">{{ action.user.first_name }}:</a> {{ action.short_description }}</h3>
 
                     <div class="timeline-body">
-                        {{ action.description }}
-                    </div>
-                    <!--
-                        <div class="timeline-footer">
-                            <a class="btn btn-primary btn-sm">Read more</a>
-                            <a class="btn btn-danger btn-sm">Delete</a>
+                        <div class="row mx-2 mb-4">
+                          {{ action.description }}
+                        </div>                        
+
+                        <div class="row mx-2">
+                          {% if action.docfile %}
+
+                              {% if action.DocFileType.mime == 'application/pdf' %}
+                              <a href="{{ action.docfile.url }}" class="btn btn-default btn-lg" target="_blank">
+                                <i class="fas fa-file-pdf"></i> {{ action.DocFileType.extension.upper }}
+                              </a>
+                              {% elif action.DocFileTypeGroup == 'image' %}
+                              <a href="{{ action.docfile.url }}" target="_blank">
+                                <img src="{{ action.docfile.url }}" width="200px">
+                              </a>               
+                              {% else %}                  
+                                <a href="{{ action.docfile.url }}" class="btn btn-default btn-lg" target="_blank">
+                                  <i class="far fa-file"></i> {{ action.DocFileType.extension.upper }}
+                                </a>
+                              {% endif %}                               
+                            
+                          {% endif %}
                         </div>
-                    -->
+                    </div>
+                    
+                        <div class="timeline-footer">
+                            {% if ticket.status  %}
+                                {% if ticket.user == user  %}
+                                <a href="{% url 'tickets:delete_ticket' ticket.id %}" class="btn btn-danger btn-sm confirm-delete-action" data-toggle="modal" data-target="#confirmDeleteTicketModal" id="deleteButton-{{ ticket.id }}">
+                                  <i class="far fa-trash-alt"></i> Excluir
+                                </a>
+                                <a href="{% url 'tickets:update_ticket' ticket.id %}" class="btn btn-info btn-sm"><i class="fas fa-edit"></i> Editar</a>
+                                {% endif %}
+                            {% endif %}
+                        </div>
+                    
                     
                     </div>
                 </div>
@@ -123,12 +177,12 @@
         <div class="row">
             <div class="col-md-12">
                 {% if ticket.status  %}
-                <a href="{% url 'tickets:delete_ticket' ticket.id %}" class="btn btn-danger float-right m-1 col-md-2 confirm-delete-ticket" data-toggle="modal" data-target="#confirmDeleteTicketModal" id="deleteButton-{{ ticket.id }}"><i class="far fa-trash-alt"></i> Excluir Ticket</a>
-                <a href="{% url 'tickets:close_ticket' ticket.id %}" class="btn btn-info float-right m-1 col-md-2 confirm-close-ticket" data-toggle="modal" data-target="#confirmCloseTicketModal" id="closeButton-{{ ticket.id }}"><i class="fas fa-times"></i> Encerrar Ticket</a>
-
                     {% if ticket.user == user  %}
+                    <a href="{% url 'tickets:delete_ticket' ticket.id %}" class="btn btn-danger float-right m-1 col-md-2 confirm-delete-ticket" data-toggle="modal" data-target="#confirmDeleteTicketModal" id="deleteButton-{{ ticket.id }}"><i class="far fa-trash-alt"></i> Excluir Ticket</a>
                     <a href="{% url 'tickets:update_ticket' ticket.id %}" class="btn btn-info float-right m-1 col-md-2"><i class="fas fa-edit"></i> Editar Ticket</a>
                     {% endif %}
+                <a href="{% url 'tickets:close_ticket' ticket.id %}" class="btn btn-info float-right m-1 col-md-2 confirm-close-ticket" data-toggle="modal" data-target="#confirmCloseTicketModal" id="closeButton-{{ ticket.id }}"><i class="fas fa-times"></i> Encerrar Ticket</a>
+
                 <a href="{% url 'tickets:create_action' ticket.id %}" class="btn btn-info float-right m-1 col-md-2"><i class="fas fa-plus"></i> Nova Ação</a>
                 {% else %}
                 <a href="{% url 'tickets:open_ticket' ticket.id %}" class="btn btn-info float-right m-1 col-md-2 confirm-open-ticket" data-toggle="modal" data-target="#confirmOpenTicketModal" id="openButton-{{ ticket.id }}"><i class="fas fa-redo"></i> Reabrir Ticket</a>

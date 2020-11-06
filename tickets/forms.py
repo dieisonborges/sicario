@@ -5,17 +5,17 @@ from .utils import random_protocol_generate
 from .models import Ticket, Action
 
 class TicketForm(forms.ModelForm):      
-
+    docfile = forms.FileField(required=False)
     class Meta:
         model = Ticket
-        fields = ('short_description', 'description')
+        fields = ('short_description', 'description', 'docfile')
         #exclude = ()
 
 class ActionForm(forms.ModelForm): 
-
+    docfile = forms.FileField(required=False)
     class Meta:
         model = Action        
-        fields = ('short_description', 'description')
+        fields = ('short_description', 'description', 'docfile')
         #exclude = ()
 
 

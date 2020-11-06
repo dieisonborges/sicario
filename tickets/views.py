@@ -29,7 +29,7 @@ def create_ticket(request):
     template_name = 'tickets/create_update.html'
     context = {}
     if request.method == 'POST':
-        form = TicketForm(request.POST)
+        form = TicketForm(request.POST, request.FILES)
         if form.is_valid():
             f = form.save(commit=False)
             f.user = request.user
@@ -89,7 +89,7 @@ def create_action(request, ticket_id):
     template_name = 'actions/create_update.html'
     context = {}
     if request.method == 'POST':
-        form = ActionForm(request.POST)
+        form = ActionForm(request.POST, request.FILES)
         if form.is_valid():
             f = form.save(commit=False)
             f.ticket_id = ticket_id
@@ -102,8 +102,18 @@ def create_action(request, ticket_id):
     form = ActionForm()
     context['form'] = form
     context['ticket_id'] = ticket_id
-    print(form.__dict__)
     return render(request, template_name, context)
+
+@login_required
+def delete_action(request, action_id, ticket_id):
+    action = get_object_or_404(Action, id=action_id)
+    action.delete()
+    messages.success(request, 'Removido com sucesso!')        
+    return HttpResponseRedirect(reverse('tickets:read_ticket', kwargs={'ticket_id': ticket_id}))
+
+@login_required
+def update_action(request, action_id, ticket_id):
+    pass
 
 
 
