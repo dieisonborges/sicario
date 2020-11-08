@@ -55,12 +55,16 @@
     <ul class="navbar-nav ml-auto">
       <!-- Messages Dropdown Menu -->
       <li class="nav-item dropdown">
-        <a class="nav-link" data-toggle="dropdown" href="#">
+        <a class="nav-link" data-toggle="dropdown" href="#">          
+          {% if user.profile.photo %}
+          <img src="{{ user.profile.photo.url }}" class="img-size-50 img-circle" alt="{{ user.username }}">
+          {% else %}
           <i class="far fa-user"></i>
+          {% endif %}
           <span class="badge badge-info navbar-badge">2</span>
         </a>
         <div class="dropdown-menu dropdown-menu-sm dropdown-menu-right">
-          <a href="{% url 'accounts:create_profile_user' %}" class="dropdown-item text-sm"><i class="fas fa-user"></i> Perfil</a> 
+          <a href="{% url 'accounts:read_profile_user' %}" class="dropdown-item text-sm"><i class="fas fa-user"></i> Perfil</a> 
           <div class="dropdown-divider"></div>
           <a href="{% url 'accounts:password_reset_user' %}" class="dropdown-item text-sm"><i class="fas fa-key"></i> Alterar Senha</a> 
           <div class="dropdown-divider"></div>
@@ -83,35 +87,45 @@
 
     <!-- Sidebar -->
     <div class="sidebar">
+
       <!-- Sidebar user panel (optional) -->
+      <!--
       <div class="user-panel mt-3 pb-3 mb-3 d-flex">
         <div class="image">          
           {% if user.profile.photo %}
-          <img src="{{ user.profile.photo.url }}" class="img-circle elevation-2" alt="User Image">
+          <img src="{{ user.profile.photo.url }}" class="img-circle elevation-2" alt="{{ user.username }}">
           {% else %}
-          <img src="{% static 'img/user.png' %}" class="img-circle elevation-2" alt="User Image">
+          <img src="{% static 'img/user.png' %}" class="img-circle elevation-2" alt="{{ user.username }}">
           {% endif %}
         </div>
         <div class="info">
-          <a href=" {% url 'accounts:read_profile_user' %} " class="d-block">Usuário <small><i class="fas fa-tools"></small></i></a>
+          <a href=" {% url 'accounts:read_profile_user' %} " class="d-block"> {{ user.first_name }} </a>
           
         </div>
       </div>
+      -->
 
       <!-- Sidebar Menu -->
       <nav class="mt-2">
         <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
           <!-- Add icons to the links using the .nav-icon class
-               with font-awesome or any other icon font library -->        
+               with font-awesome or any other icon font library --> 
+            <li class="nav-item">
+                <a href="{% url 'core:index' %}" class="nav-link">
+                  <i class="nav-icon fas fa-tachometer-alt"></i>
+                  <p>
+                    Dashboard
+                    <span class="right badge badge-info">Home</span>
+                  </p>
+                </a>
+            </li>        
                     
-          <li class="nav-item">
-            <a href="{% url 'tickets:index_tickets' %}" class="nav-link">
-              <i class="nav-icon fas fa-tasks"></i>
-              <p>
-                Tickets
-              </p>
-            </a>
-          </li>         
+            <li class="nav-item">
+                <a href="{% url 'tickets:index_tickets' %}" class="nav-link">
+                <i class="nav-icon fas fa-tasks"></i>
+                <p>Tickets</p>
+                </a>
+            </li>         
           
           
         </ul>

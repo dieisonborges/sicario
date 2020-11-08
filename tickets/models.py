@@ -2,14 +2,17 @@ from django.conf import settings
 from django.db import models
 from django.utils import timezone
 import filetype
+from django.contrib.auth.models import User
 
 from .utils import random_protocol_generate, path_and_rename
 
 # Create your models here.
 
+
 class Ticket(models.Model):
     """ Ticket are called """
-    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
+    #user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name='ticket')
+    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='tickets')
     protocol = models.CharField(max_length=10, unique=True)
     status = models.BooleanField('Status', default=False)#False=Close True=Open
     short_description = models.CharField('Título', max_length=50)
@@ -38,7 +41,8 @@ class Ticket(models.Model):
 class Action(models.Model):
     """ Ticket Action """
     ticket = models.ForeignKey(Ticket, on_delete=models.CASCADE, related_name = "actions")
-    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
+    #user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
+    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='actions')
     short_description = models.CharField('Título',max_length=50)
     description = models.TextField('Descrição')
     docfile = models.FileField('Arquivo', upload_to=path_and_rename, null=True)

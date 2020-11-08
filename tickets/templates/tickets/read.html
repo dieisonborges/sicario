@@ -134,11 +134,11 @@
                     
                         <div class="timeline-footer">
                             {% if ticket.status  %}
-                                {% if ticket.user == user  %}
-                                <a href="{% url 'tickets:delete_ticket' ticket.id %}" class="btn btn-danger btn-sm confirm-delete-action" data-toggle="modal" data-target="#confirmDeleteTicketModal" id="deleteButton-{{ ticket.id }}">
+                                {% if action.user == user  %}
+                                <a href="{% url 'tickets:delete_action' ticket.id action.id %}" class="btn btn-danger btn-sm confirm-delete-action" data-toggle="modal" data-target="#confirmDeleteActionModal" id="deleteActionButton-{{ action.id }}">
                                   <i class="far fa-trash-alt"></i> Excluir
                                 </a>
-                                <a href="{% url 'tickets:update_ticket' ticket.id %}" class="btn btn-info btn-sm"><i class="fas fa-edit"></i> Editar</a>
+                                <a href="{% url 'tickets:update_action' ticket.id action.id %}" class="btn btn-info btn-sm"><i class="fas fa-edit"></i> Editar</a>
                                 {% endif %}
                             {% endif %}
                         </div>
@@ -226,6 +226,17 @@
     })
     $(document).on('click', '#confirmDeleteTicketButtonModal', function(){
       var caller = $('#confirmDeleteTicketButtonModal').closest('.modal').attr('caller-id');
+      window.location = $('#'.concat(caller)).attr('href');
+    })
+  </script>
+
+<!-- Modal Delete Action -->
+<script> 
+    $(document).on('click', '.confirm-delete-action', function(){
+      $('#confirmDeleteActionModal').attr('caller-id', $(this).attr('id'));
+    })
+    $(document).on('click', '#confirmDeleteActionButtonModal', function(){
+      var caller = $('#confirmDeleteActionButtonModal').closest('.modal').attr('caller-id');
       window.location = $('#'.concat(caller)).attr('href');
     })
   </script>

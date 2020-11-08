@@ -36,7 +36,10 @@
                 {{ form.username.errors }}
                 <label for="{{ form.username.id_for_label }}">{{ form.username.label }}</label>                    
                 {% render_field form.username class+="form-control"  %}
-            </div>             
+            </div>       
+            
+            {% if form.password %}
+
             <div class="form-group">
                 {{ form.password.errors }}
                 <label for="{{ form.password.id_for_label }}">{{ form.password.label }}</label>                    
@@ -47,6 +50,10 @@
                 <label for="{{ form.confirm_password.id_for_label }}">{{ form.confirm_password.label }}</label>                    
                 {% render_field form.confirm_password class+="form-control" type="password"  %}
             </div>
+               
+            {% endif %}
+                     
+            
             <div class="form-group">
                 {{ form.email.errors }}
                 <label for="{{ form.email.id_for_label }}">{{ form.email.label }}</label>                    

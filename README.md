@@ -61,6 +61,8 @@ $ python3 manage.py collectstatic
 ## Install Filetype
 $ pip3 install filetype
 
+## Install Clean Up
+$ pip3 install django-cleanup
 
 ## Run Project
 $ python3 manage.py runserver
