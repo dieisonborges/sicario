@@ -8,6 +8,7 @@ media
 
 #Media
 media/
+accounts/
 
 #StaticFiles
 #staticfiles/*
