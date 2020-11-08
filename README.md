@@ -70,10 +70,13 @@ $ python3 manage.py runserver
 ## Install Snap
 $ sudo apt install snap
 
-## Install Bower
+## If necessary
+
+### Install Bower
 $ sudo snap install bower --classic
 
-## Update AdminLte
+### Update AdminLte
 $ cd static
+
 $ bower install admin-lte
 
