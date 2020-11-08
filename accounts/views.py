@@ -86,19 +86,23 @@ def password_reset_user(request):
 def create_profile_user(request):
     template_name = 'create_update_user_profile.html'
     context = {}
-    if request.method == 'POST':
-        form = UserProfileForm(request.POST, request.FILES)
-        if form.is_valid():
-            f = form.save(commit=False)
-            f.user = request.user
-            f.save()
-            messages.success(request, 'Adicionado com sucesso!')
-            return HttpResponseRedirect(reverse('accounts:read_profile_user'))
-        else:
-            messages.error(request, 'Houve um erro!')      
-    form = UserProfileForm()
-    context['form'] = form
-    return render(request, template_name, context)
+    if UserProfile.objects.filter(user=request.user).count() == 0:
+        if request.method == 'POST':
+            form = UserProfileForm(request.POST, request.FILES)
+            if form.is_valid():
+                f = form.save(commit=False)
+                f.user = request.user
+                f.save()
+                messages.success(request, 'Adicionado com sucesso!')
+                return HttpResponseRedirect(reverse('accounts:read_profile_user'))
+            else:
+                messages.error(request, 'Houve um erro!')      
+        form = UserProfileForm()
+        context['form'] = form
+        return render(request, template_name, context)
+    else:
+        messages.success(request, 'Você já tem um perfil!')
+        return HttpResponseRedirect(reverse('accounts:read_profile_user'))
 
 @login_required
 def read_profile_user(request):

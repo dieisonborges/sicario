@@ -1,6 +1,7 @@
 from django.db import models
 from django.conf import settings
 from django.contrib.auth.models import User
+from django.core.exceptions import ValidationError
 
 from .utils import rand_gen, path_and_rename
 
@@ -19,3 +20,11 @@ class UserProfile(models.Model):
     #For DjangoAdmin
     def __str__(self):
         return self.user.username
+
+    #Check one profile for DjangoAdmin
+    """
+    def clean(self):
+        model = self.__class__
+        if model.objects.count() > 0 and self.id != model.objects.get().id:
+            raise ValidationError("Você já tem um perfil cadastrado.")
+    """

@@ -6,6 +6,8 @@ app_name = 'tickets'
 urlpatterns = [
     #Tickets
     path('', views.index_tickets, name='index_tickets'),
+    path('buscar/', views.search_ticket, name='search_ticket'),
+    path('status/<str:status>/', views.filter_ticket_status, name='filter_ticket_status'),
     path('criar/ticket/', views.create_ticket, name='create_ticket'),
     path('<int:ticket_id>/', views.read_ticket, name='read_ticket'),    
     path('editar/<int:ticket_id>/', views.update_ticket, name='update_ticket'),

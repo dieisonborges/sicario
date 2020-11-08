@@ -135,10 +135,10 @@
                         <div class="timeline-footer">
                             {% if ticket.status  %}
                                 {% if action.user == user  %}
-                                <a href="{% url 'tickets:delete_action' ticket.id action.id %}" class="btn btn-danger btn-sm confirm-delete-action" data-toggle="modal" data-target="#confirmDeleteActionModal" id="deleteActionButton-{{ action.id }}">
-                                  <i class="far fa-trash-alt"></i> Excluir
+                                <a href="{% url 'tickets:delete_action' ticket.id action.id %}" class="btn btn-danger btn-xs confirm-delete-action" data-toggle="modal" data-target="#confirmDeleteActionModal" id="deleteActionButton-{{ action.id }}">
+                                  <i class="far fa-trash-alt"></i>
                                 </a>
-                                <a href="{% url 'tickets:update_action' ticket.id action.id %}" class="btn btn-info btn-sm"><i class="fas fa-edit"></i> Editar</a>
+                                <a href="{% url 'tickets:update_action' ticket.id action.id %}" class="btn btn-info btn-xs"><i class="fas fa-edit"></i></a>
                                 {% endif %}
                             {% endif %}
                         </div>
@@ -146,9 +146,7 @@
                     
                     </div>
                 </div>
-                <!-- END timeline item -->   
-
-                
+                <!-- END timeline item -->                
 
                {% endfor %}
                

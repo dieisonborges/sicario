@@ -5,6 +5,9 @@ from django.template import loader
 from django.core import validators
 from django.contrib import messages
 from django.urls import reverse
+from datetime import datetime
+from django.db.models import Q
+
 
 from .models import Ticket, Action
 
@@ -18,15 +21,45 @@ from core.decorators import require_group
 @login_required
 def index_tickets(request):    
     template = loader.get_template('tickets/index.html')
-    latest_ticket_list = Ticket.objects.order_by('-created_at')
+    tickets = Ticket.objects.order_by('-created_at')
     tickets_count_open = Ticket.objects.filter(status=True).count()
     tickets_count_close = Ticket.objects.filter(status=False).count()
     context = {
         'tickets_count_open': tickets_count_open,
         'tickets_count_close': tickets_count_close,
-        'latest_ticket_list': latest_ticket_list,
+        'tickets': tickets,
     }
     return HttpResponse(template.render(context, request))
+
+@login_required
+def search_ticket(request):
+    template_name = 'tickets/index.html'
+    tickets_count_open = Ticket.objects.filter(status=True).count()
+    tickets_count_close = Ticket.objects.filter(status=False).count()
+    search = request.GET.get('search')
+    tickets = Ticket.objects.filter(
+            Q(description__icontains=search) | 
+            Q(short_description__icontains=search)
+        )
+    context = {
+        'tickets_count_open': tickets_count_open,
+        'tickets_count_close': tickets_count_close,
+        'tickets': tickets,
+    }
+    return render(request, template_name, context)
+
+@login_required
+def filter_ticket_status(request, status):
+    template_name = 'tickets/index.html'
+    tickets_count_open = Ticket.objects.filter(status=True).count()
+    tickets_count_close = Ticket.objects.filter(status=False).count()
+    tickets = Ticket.objects.filter(status=status)
+    context = {
+        'tickets_count_open': tickets_count_open,
+        'tickets_count_close': tickets_count_close,
+        'tickets': tickets,
+    }
+    return render(request, template_name, context)
 
 @login_required
 def create_ticket(request):
@@ -86,6 +119,15 @@ def close_ticket(request, ticket_id):
     ticket = get_object_or_404(Ticket, id=ticket_id)
     ticket.status = False #Close Ticket
     ticket.save()
+    Action.objects.create(
+        user = request.user, 
+        ticket = ticket,
+        short_description = 'Ticket Encerrado', 
+        description = 'Ticket encerrado por ' + 
+        request.user.get_full_name() + ' #' + 
+        request.user.username +
+        ' em ' + datetime.now().strftime("%d/%m/%Y às %H:%M:%S")
+        )
     messages.success(request, 'Encerrado com sucesso!')        
     return HttpResponseRedirect(reverse('tickets:read_ticket', kwargs={'ticket_id': ticket_id}))
 
@@ -94,6 +136,15 @@ def open_ticket(request, ticket_id):
     ticket = get_object_or_404(Ticket, id=ticket_id)
     ticket.status = True #Open Ticket
     ticket.save()
+    Action.objects.create(
+        user = request.user, 
+        ticket = ticket,
+        short_description = 'Ticket Reaberto', 
+        description = 'Ticket reaberto por ' + 
+        request.user.get_full_name() + ' #' + 
+        request.user.username +
+        ' em ' + datetime.now().strftime("%d/%m/%Y às %H:%M:%S")
+        )
     messages.success(request, 'Reaberto com sucesso!')        
     return HttpResponseRedirect(reverse('tickets:read_ticket', kwargs={'ticket_id': ticket_id}))
 
