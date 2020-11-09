@@ -1,23 +1,23 @@
 from django import forms
 from django.contrib.auth.models import User, Group
 
-
 from .utils import random_protocol_generate
 
 from .models import Ticket, Action
 
 class TicketForm(forms.ModelForm):      
     docfile = forms.FileField(label='Anexo', required=False)
+    deadline = forms.DateTimeField(label='Prazo', required=False)
     class Meta:
         model = Ticket
-        fields = ('short_description', 'description', 'docfile', 'teams')
+        fields = ('short_description', 'description', 'docfile', 'teams', 'deadline')
         #exclude = ()
 
 class ActionForm(forms.ModelForm): 
     docfile = forms.FileField(label='Anexo', required=False)
     class Meta:
         model = Action        
-        fields = ('short_description', 'description', 'docfile')        
+        fields = ('short_description', 'description', 'docfile', 'time')        
         #exclude = ()
 
 

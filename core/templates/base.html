@@ -29,6 +29,10 @@
   <link rel="stylesheet" href="{% static 'bower_components/admin-lte/plugins/summernote/summernote-bs4.css' %}">
   <!-- Google Font: Source Sans Pro -->
   <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700" rel="stylesheet">
+  <!-- Select2 -->
+  <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-beta.1/dist/css/select2.min.css" rel="stylesheet" />
+  <!-- Flat Pickr-->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
 </head>
 <body class="hold-transition sidebar-mini layout-fixed sidebar-collapse">
 <div class="wrapper">
@@ -159,9 +163,11 @@
   </div>
   <!-- /.content-wrapper -->
   <footer class="main-footer">
-    <strong><a href="https://mit-license.org/" target="_BLANK">MIT License</a> </strong> 
-    | Open Source | Copyright © 2020
-    <strong><a href="http://sicario.io" target="_BLANK">sicario.io</a> </strong> .
+    <strong><a href="https://mit-license.org/" target="_BLANK">MIT License</a> </strong>   
+    {% now 'd/m/Y H:i:s' %}  
+    <strong><a href="http://sicario.io" target="_BLANK">sicario.io</a> </strong>
+
+    
     
     <div class="float-right d-none d-sm-inline-block">
       <b>Version</b> 2.0<a href="/admin" target="_BLANK">.</a>1
@@ -210,6 +216,11 @@
 <script src="{% static 'bower_components/admin-lte/dist/js/pages/dashboard.js' %}"></script>
 <!-- AdminLTE for demo purposes -->
 <script src="{% static 'bower_components/admin-lte/dist/js/demo.js' %}"></script>
+<!-- Select2 -->
+<script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-beta.1/dist/js/select2.min.js"></script>
+<!-- Flat Pickr-->
+<script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+<script src="https://npmcdn.com/flatpickr/dist/l10n/pt.js"></script>
 
 {% block scripts %}{% endblock scripts %}
 

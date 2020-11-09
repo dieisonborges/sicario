@@ -82,7 +82,16 @@ def create_ticket(request):
 @login_required
 def read_ticket(request, ticket_id):
     ticket = get_object_or_404(Ticket, pk=ticket_id)
-    return render(request, 'tickets/read.html', {'ticket': ticket})
+    if ticket.deadline.isoformat() < datetime.now().isoformat():
+        deadline = True
+    else:
+        deadline = False
+    context = {
+        'ticket': ticket,
+        'deadline': deadline
+    }
+    
+    return render(request, 'tickets/read.html', context)
 
 @login_required
 def update_ticket(request, ticket_id):

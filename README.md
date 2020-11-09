@@ -68,6 +68,11 @@ pip3 install django-widget-tweaks
 pip3 install pillow
 ```
 
+## Django Clean Up
+```
+pip3 install django-cleanup
+```
+
 ## Install Mysql Python Client
 ```
 sudo apt install python-dev default-libmysqlclient-dev

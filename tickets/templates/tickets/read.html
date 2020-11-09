@@ -4,13 +4,14 @@
 
     <div class="col-md-12">
         <div class="card">
+          
           <div class="card-header">
           <h5 class="card-title m-0"><b>Ticket </b>#{{ ticket.protocol }}</h5>
           
           {% if ticket.status %}
-              <h4><span class="badge badge-danger float-right">Aberto</span></h4>
+              <h4><span class="badge badge-danger ml-3">Aberto</span></h4>
           {% else %}
-              <h4><span class="badge badge-success float-right">Fechado</span></h4>
+              <h4><span class="badge badge-success ml-3">Fechado</span></h4>
           {% endif %}
           
           </div>
@@ -39,13 +40,31 @@
               
             {% endif %}
 
-            <br>
-            <h6 class="card-title mb-3 mt-3">
+            <div class="row">
+              <h6 class="card-title mb-3 mt-3">
                 <b>Equipes envolvidas: </b>            
-            {% for team in ticket.teams.all %}
-            <span class="badge badge-info"><i class="fas fa-users"></i> {{ team }}</span>
-            {% endfor %}
-            </h6>
+                {% for team in ticket.teams.all %}
+                <span class="badge badge-info"><i class="fas fa-users"></i> {{ team }}</span>
+                {% endfor %}
+              </h6>
+            </div>
+
+            <div class="row">
+              <h6 class="card-title mb-3 mt-3">
+                  <b><i class="fas fa-clock"></i>  Prazo: </b>                  
+                  {% if deadline  %}
+                  <span class="badge badge-danger">{{ ticket.deadline }}</span>
+                  <div class="ribbon-wrapper">
+                    <div class="ribbon bg-primary">
+                      Ribbon
+                    </div>
+                  </div>
+                  {% else %}
+                  <span class="badge badge-success">{{ ticket.deadline }}</span>
+                  {% endif %}
+              </h6>
+            </div>
+            
               
           </div>
           <div class="card-footer">

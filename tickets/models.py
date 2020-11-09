@@ -21,6 +21,7 @@ class Ticket(models.Model):
     short_description = models.CharField('Título', max_length=50)
     description = models.TextField('Descrição')
     docfile = models.FileField('Arquivo', upload_to=path_and_rename, null=True)
+    deadline = models.DateTimeField('Prazo', null=True)
     created_at = models.DateTimeField('Criado em', auto_now_add=True)
     updated_at = models.DateTimeField('Alterado em', auto_now=True)
 
@@ -49,6 +50,7 @@ class Action(models.Model):
     short_description = models.CharField('Título',max_length=50)
     description = models.TextField('Descrição')
     docfile = models.FileField('Arquivo', upload_to=path_and_rename, null=True)
+    time = models.TimeField('Tempo Utilizado', null=True)
     created_at = models.DateTimeField('Criado em', auto_now_add=True)
     updated_at = models.DateTimeField('Alterado em',auto_now=True)
 
