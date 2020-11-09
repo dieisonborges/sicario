@@ -1,4 +1,6 @@
 from django import forms
+from django.contrib.auth.models import User, Group
+
 
 from .utils import random_protocol_generate
 
@@ -8,7 +10,7 @@ class TicketForm(forms.ModelForm):
     docfile = forms.FileField(label='Anexo', required=False)
     class Meta:
         model = Ticket
-        fields = ('short_description', 'description', 'docfile')
+        fields = ('short_description', 'description', 'docfile', 'teams')
         #exclude = ()
 
 class ActionForm(forms.ModelForm): 

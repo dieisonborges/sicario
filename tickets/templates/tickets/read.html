@@ -19,8 +19,8 @@
               <b>{{ ticket.short_description }}</b>
             </h6>
             <p class="card-text">{{ ticket.description }}</p>             
-            </p>
-            
+            </p>            
+            <br>
             {% if ticket.docfile %}
 
                 {% if ticket.DocFileType.mime == 'application/pdf' %}
@@ -38,6 +38,14 @@
                 {% endif %}  
               
             {% endif %}
+
+            <br>
+            <h6 class="card-title mb-3 mt-3">
+                <b>Equipes envolvidas: </b>            
+            {% for team in ticket.teams.all %}
+            <span class="badge badge-info"><i class="fas fa-users"></i> {{ team }}</span>
+            {% endfor %}
+            </h6>
               
           </div>
           <div class="card-footer">

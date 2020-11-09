@@ -2,9 +2,11 @@ from django.conf import settings
 from django.db import models
 from django.utils import timezone
 import filetype
-from django.contrib.auth.models import User
+from django.contrib.auth.models import User, Group
 
 from .utils import random_protocol_generate, path_and_rename
+
+from teams.models import Team
 
 # Create your models here.
 
@@ -13,6 +15,7 @@ class Ticket(models.Model):
     """ Ticket are called """
     #user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name='ticket')
     user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='tickets')
+    teams = models.ManyToManyField(Team, related_name='tickets')
     protocol = models.CharField(max_length=10, unique=True)
     status = models.BooleanField('Status', default=False)#False=Close True=Open
     short_description = models.CharField('Título', max_length=50)

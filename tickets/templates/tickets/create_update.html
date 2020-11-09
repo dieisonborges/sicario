@@ -35,6 +35,11 @@
             {{ form.docfile.errors }}
             <label for="{{ form.docfile.id_for_label }}">{{ form.docfile.label }}</label>                    
             {% render_field form.docfile class+="form-control-file"  %}
+            </div>
+            <div class="form-group"> 
+            {{ form.teams.errors }}
+            <label for="{{ form.teams.id_for_label }}">Equipe</label>                    
+            {% render_field form.teams class+="form-control-file"  %}
             </div>                
         </div>
         <!-- /.card-body -->
