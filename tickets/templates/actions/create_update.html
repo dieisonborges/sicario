@@ -36,7 +36,11 @@
             {{ form.docfile.errors }}
             <label for="{{ form.docfile.id_for_label }}">{{ form.docfile.label }}</label>                    
             {% render_field form.docfile class+="form-control-file"  %}
-            </div>                 
+            </div>
+            {{ form.time.errors }}
+            <label for="{{ form.time.id_for_label }}">{{ form.time.label }}</label>                    
+            {% render_field form.time class+="form-control-file"  %}
+            </div>                
         </div>
         <!-- /.card-body -->
 

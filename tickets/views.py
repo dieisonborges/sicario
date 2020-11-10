@@ -5,7 +5,7 @@ from django.template import loader
 from django.core import validators
 from django.contrib import messages
 from django.urls import reverse
-from datetime import datetime
+from datetime import datetime, date
 from django.db.models import Q
 
 
@@ -21,7 +21,7 @@ from core.decorators import require_group
 @login_required
 def index_tickets(request):    
     template = loader.get_template('tickets/index.html')
-    tickets = Ticket.objects.order_by('-created_at')
+    tickets = Ticket.objects.filter(status=True).order_by('-created_at')
     tickets_count_open = Ticket.objects.filter(status=True).count()
     tickets_count_close = Ticket.objects.filter(status=False).count()
     context = {
@@ -38,6 +38,7 @@ def search_ticket(request):
     tickets_count_close = Ticket.objects.filter(status=False).count()
     search = request.GET.get('search')
     tickets = Ticket.objects.filter(
+            Q(protocol__icontains=search) |
             Q(description__icontains=search) | 
             Q(short_description__icontains=search)
         )
@@ -83,14 +84,13 @@ def create_ticket(request):
 def read_ticket(request, ticket_id):
     ticket = get_object_or_404(Ticket, pk=ticket_id)
     if ticket.deadline.isoformat() < datetime.now().isoformat():
-        deadline = True
+        deadline = True #on time
     else:
-        deadline = False
+        deadline = False #timer over
     context = {
         'ticket': ticket,
-        'deadline': deadline
+        'deadline': deadline,
     }
-    
     return render(request, 'tickets/read.html', context)
 
 @login_required

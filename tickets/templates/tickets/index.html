@@ -6,7 +6,7 @@
         <div class="container-fluid">
           <div class="row mb-2">
             <div class="col-sm-6">
-              <h1>Tickets</h1>
+              <h1><a href="{% url 'tickets:index_tickets' %}">Tickets</a></h1>
             </div>            
           </div>
         </div><!-- /.container-fluid -->
@@ -103,7 +103,8 @@
                       <th>Status</th>
                       <th>Título</th>
                       <th>Criado em</th>
-                      <th>Última Ação</th>
+                      <th>Prazo</th>
+                      <th>Última Ação</th>                      
                     </tr>
                   </thead>
                   <tbody>
@@ -136,20 +137,26 @@
                                 </td>
                                 <td>
                                     <a href="{% url 'tickets:read_ticket' ticket.id %}">
-                                        {{ ticket.short_description }}
+                                        {{ ticket.short_description|slice:":30" }}
                                     </a>
                                 </td>
                                 <td>
                                     <a href="{% url 'tickets:read_ticket' ticket.id %}">
-                                        {{ ticket.created_at|date:"d M Y" }}
+                                        {{ ticket.created_at|date:"d/m/Y" }}
                                     </a>
                                 </td>
                                 <td>
+                                  <a href="/tickets/{{ ticket.id }}/">
+                                      {{ ticket.deadline|date:"d/m/Y" }}
+                                  </a>
+                                </td>
+                                <td>
                                     <a href="/tickets/{{ ticket.id }}/">
-                                        {{ ticket.actions.last.short_description }} em
+                                        {{ ticket.actions.last.short_description|slice:":15" }} em
                                         {{ ticket.actions.last.created_at|date:"d M Y" }}
                                     </a>
                                 </td>
+                                
                             </tr>
                         {% endfor %}                        
                     {% else %}

@@ -4,10 +4,11 @@ from django.contrib.auth.models import User, Group
 from .utils import random_protocol_generate
 
 from .models import Ticket, Action
+from teams.models import Team
 
 class TicketForm(forms.ModelForm):      
     docfile = forms.FileField(label='Anexo', required=False)
-    deadline = forms.DateTimeField(label='Prazo', required=False)
+    deadline = forms.DateTimeField(label='Prazo')
     class Meta:
         model = Ticket
         fields = ('short_description', 'description', 'docfile', 'teams', 'deadline')
@@ -15,12 +16,11 @@ class TicketForm(forms.ModelForm):
 
 class ActionForm(forms.ModelForm): 
     docfile = forms.FileField(label='Anexo', required=False)
+    time = forms.IntegerField(label='Tempo utilizado em Minutos',  required=False)
     class Meta:
         model = Action        
         fields = ('short_description', 'description', 'docfile', 'time')        
         #exclude = ()
-
-
 
 #Exemplo
     """protocol = random_protocol_generate()
