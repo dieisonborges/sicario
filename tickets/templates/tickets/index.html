@@ -77,20 +77,34 @@
       <!-- ./col -->
     </div>
     <div class="row">
+      
+    </div>
+
+
+    <div class="card card-info">
+      
+      <div class="card-body">
+
+        <form id="search" action="{% url 'tickets:search_ticket' %}" method="GET" >
+          <div class="input-group input-group-sm">            
+            
+            <input type="text" class="form-control" name="search" placeholder="Buscar" value="{{ request.GET.search }}">
+            <span class="input-group-append">
+              <button type="submit" class="btn btn-info btn-flat" form="search"><i class="fas fa-search"></i></button>
+            </span>
+          </div>
+        </form>
+
+      </div>
+      <!-- /.card-body -->
+    </div>
+
+    <div class="row">
           <div class="col-12">
             <div class="card">
-              <div class="card-header">
+              <div class="card-header  float-left">
                 <h3 class="card-title"><i class="fas fa-tasks"></i> Tickets <a href="{% url 'tickets:create_ticket' %}" class="btn btn-info btn-xs"><i class="fas fa-plus"></i> Novo</a></h3> 
                 
-                
-                <form id="search" action="{% url 'tickets:search_ticket'  %}" method="GET"  class="card-tools">
-                  <div class="input-group input-group-sm" style="width: 150px;">                
-                        <input type="text" name="search" class="form-control float-right" placeholder="Buscar" value="">
-                        <div class="input-group-append">
-                            <button type="submit" class="btn btn-default" form="search"><i class="fas fa-search"></i></button>
-                        </div>
-                  </div>
-                </form>
               </div>
               <!-- /.card-header -->
               <div class="card-body table-responsive p-0">

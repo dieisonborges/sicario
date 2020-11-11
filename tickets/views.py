@@ -11,7 +11,7 @@ from django.db.models import Q
 
 from .models import Ticket, Action
 
-from .forms import TicketForm, ActionForm
+from .forms import TicketForm, ActionForm, TicketTeamForm
 
 from .utils import random_protocol_generate
 
@@ -74,9 +74,13 @@ def create_ticket(request):
             f.protocol = random_protocol_generate()
             f.status = True #Open
             f.save()
+            form.save_m2m()
             messages.success(request, 'Adicionado com sucesso!')
             return HttpResponseRedirect(reverse('tickets:index_tickets'))
-    form = TicketForm()
+        else:
+            messages.error(request, 'Você não adiconou o Prazo')
+    else:
+        form = TicketForm()
     context['form'] = form
     return render(request, template_name, context)
 
@@ -156,6 +160,24 @@ def open_ticket(request, ticket_id):
         )
     messages.success(request, 'Reaberto com sucesso!')        
     return HttpResponseRedirect(reverse('tickets:read_ticket', kwargs={'ticket_id': ticket_id}))
+
+@login_required
+def update_ticket_team(request, ticket_id):
+    template_name = 'tickets/update_team.html'
+    context = {}
+    ticket = get_object_or_404(Ticket, id=ticket_id, user=request.user)
+    if request.method == 'POST':
+        form = TicketTeamForm(request.POST, instance=ticket)
+        if form.is_valid():
+            form.save()
+            messages.success(request, 'Modificado com sucesso!')        
+            return HttpResponseRedirect(reverse('tickets:read_ticket', kwargs={'ticket_id': ticket_id}))
+        else:
+            messages.error(request, 'Erro!') 
+    else:
+        form = TicketTeamForm(instance=ticket)
+    context['form'] = form
+    return render(request, template_name, context)
 
 @login_required
 def create_action(request, ticket_id):
