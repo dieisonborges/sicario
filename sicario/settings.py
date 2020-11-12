@@ -49,7 +49,6 @@ THIRD_APPS = [
     'crispy_forms',
     'widget_tweaks',
     'django_cleanup',
-
 ]
 
 PROJECT_APPS = [

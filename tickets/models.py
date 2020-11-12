@@ -52,7 +52,7 @@ class Action(models.Model):
     docfile = models.FileField('Arquivo', upload_to=path_and_rename, null=True)
     time = models.IntegerField('Tempo Utilizado', default=0) #time used in the task in minutes
     created_at = models.DateTimeField('Criado em', auto_now_add=True)
-    updated_at = models.DateTimeField('Alterado em',auto_now=True)
+    updated_at = models.DateTimeField('Alterado em', auto_now=True)
 
     class Meta:
         verbose_name = "Ação"

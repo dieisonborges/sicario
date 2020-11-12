@@ -20,6 +20,13 @@
   <link rel="stylesheet" href="{% static 'bower_components/admin-lte/dist/css/adminlte.min.css' %}">
   <!-- Google Font: Source Sans Pro -->
   <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700" rel="stylesheet">
+  <style>
+    /* Customize CSS */
+    .errorlist
+    {
+        color: red;
+    }
+  </style>
 </head>
 <body class="hold-transition login-page">
 
@@ -37,7 +44,8 @@
 
       <form action="." method="post">
         <div style="width: 100%;">
-            {% include 'messages.html' %}
+          {% include 'messages.html' %}
+          {% include 'form_errors.html' %}
         </div>        
         
         {% csrf_token %}
@@ -73,12 +81,14 @@
           <!-- /.col -->
         </div>
       </form>      
-
-      <p class="mb-1">
-        <a href="." class="text-gray">Esqueci a minha senha</a>
-      </p>
+      <!--
+        <p class="mb-1">
+          <a href="." class="text-gray">Esqueci a minha senha</a>
+        </p>
+      -->
+      
       <p class="mb-0">
-        <a href="." class="text-center text-gray">Cadastrar-se</a>
+        <a href="{% url 'accounts:create_user_register' %}" class="text-center text-gray">Cadastrar-se</a>
       </p>
     </div>
     <!-- /.login-card-body -->

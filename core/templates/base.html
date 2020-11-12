@@ -33,6 +33,13 @@
   <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-beta.1/dist/css/select2.min.css" rel="stylesheet" />
   <!-- Flat Pickr-->
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+  <style>
+    /* Customize CSS */
+    .errorlist
+    {
+        color: red;
+    }
+  </style>
 </head>
 <body class="hold-transition sidebar-mini layout-fixed sidebar-collapse">
 <div class="wrapper">
@@ -64,7 +71,7 @@
       <li class="nav-item dropdown">
         <a class="nav-link" data-toggle="dropdown" href="#">          
           {% if user.profile.photo %}
-          <img src="{{ user.profile.photo.url }}" class="img-size-50 img-circle" alt="{{ user.username }}">
+          <img src="{{ user.profile.photo.url }}" class=" img-circle" alt="{{ user.username }}" width="35px" height="35px">
           {% else %}
           <i class="far fa-user"></i>
           {% endif %}
@@ -149,6 +156,7 @@
       <div class="container-fluid"> 
         
         {% include 'messages.html' %}
+        {% include 'form_errors.html' %}
 
         {% block content %}{% endblock content %}
         

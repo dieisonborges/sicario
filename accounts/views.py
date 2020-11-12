@@ -28,6 +28,22 @@ def login_user(request):
             messages.error(request, 'Usuário ou senha inválidos!')
     return render(request, template_name, {})
 
+def create_user_register(request):
+    template_name = 'create_user_register.html'
+    context = {}
+    if request.method == 'POST':
+        form = UserForm(request.POST)         
+        if form.is_valid():                 
+            f = form.save(commit=False)
+            f.set_password(f.password)
+            f.save()
+            messages.success(request, 'Usuário criado com sucesso! Efetue o Login')        
+            return HttpResponseRedirect(reverse('accounts:login_user'))
+    else:
+        form = UserForm()
+    context['form'] = form
+    return render(request, template_name, context)
+
 @login_required
 def logout_user(request):
     logout(request)
@@ -35,19 +51,24 @@ def logout_user(request):
 
 @login_required
 def create_user(request):
-    template_name = 'create_update.html'
-    context = {}
-    if request.method == 'POST':
-        form = UserForm(request.POST)
-        if form.is_valid():
-            f = form.save(commit=False)
-            f.set_password(f.password)
-            f.save()
-            messages.success(request, 'Adicionado com sucesso!')        
-            #return HttpResponseRedirect(reverse('accounts:read_user', kwargs={'user_id': ticket_id}))
-    form = UserForm()
-    context['form'] = form
-    return render(request, template_name, context)
+    if request.user.is_superuser:
+        template_name = 'create_update.html'
+        context = {}
+        if request.method == 'POST':
+            form = UserForm(request.POST)
+            if form.is_valid():
+                f = form.save(commit=False)
+                f.set_password(f.password)
+                f.save()
+                messages.success(request, 'Adicionado com sucesso!')        
+                #return HttpResponseRedirect(reverse('accounts:read_user', kwargs={'user_id': ticket_id}))
+        else:
+            form = UserForm()
+        context['form'] = form
+        return render(request, template_name, context)
+    else:
+        messages.error(request, 'Você não tem permissão para efetuar esta ação')
+        return HttpResponseRedirect(reverse('accounts:read_profile_user'))
 
 @login_required
 def update_user(request):
@@ -61,8 +82,9 @@ def update_user(request):
             messages.success(request, 'Modificado com sucesso!')
             return HttpResponseRedirect(reverse('accounts:read_profile_user'))
         else:
-            messages.error(request, 'Houve um erro!')   
-    form = UserFormUpdate(instance=user)
+            messages.error(request, 'Houve um erro!')  
+    else: 
+        form = UserFormUpdate(instance=user)
     context['form'] = form
     return render(request, template_name, context)
 
@@ -78,14 +100,15 @@ def password_reset_user(request):
             messages.success(request, 'Adicionado com sucesso!')
         else:
             messages.error(request, 'Não foi possível alterar sua senha!')
-    form = PasswordChangeForm(user=request.user)
+    else:
+        form = PasswordChangeForm(user=request.user)
     context['form'] = form
     return render(request, template_name, context)
 
 @login_required
 def create_profile_user(request):
     template_name = 'create_update_user_profile.html'
-    context = {}
+    context = {}    
     if UserProfile.objects.filter(user=request.user).count() == 0:
         if request.method == 'POST':
             form = UserProfileForm(request.POST, request.FILES)
@@ -96,8 +119,9 @@ def create_profile_user(request):
                 messages.success(request, 'Adicionado com sucesso!')
                 return HttpResponseRedirect(reverse('accounts:read_profile_user'))
             else:
-                messages.error(request, 'Houve um erro!')      
-        form = UserProfileForm()
+                messages.error(request, 'Houve um erro!')  
+        else:    
+            form = UserProfileForm()
         context['form'] = form
         return render(request, template_name, context)
     else:
@@ -128,7 +152,8 @@ def update_profile_user(request):
             messages.success(request, 'Modificado com sucesso!')
             return HttpResponseRedirect(reverse('accounts:read_profile_user'))
         else:
-            messages.error(request, 'Houve um erro!')   
-    form = UserProfileForm(instance=profile)
+            messages.error(request, 'Houve um erro!')  
+    else: 
+        form = UserProfileForm(instance=profile)
     context['form'] = form
     return render(request, template_name, context)

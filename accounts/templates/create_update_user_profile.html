@@ -18,21 +18,85 @@
         <!-- form start -->
         <form method="POST" action="." enctype="multipart/form-data">
         {% csrf_token %}
-        <input type="hidden" value="{{ ticket_id }}" name="ticket_id">
         
         {{ form.non_field_errors }}
-        <div class="card-body">            
+        <div class="card-body"> 
 
             <div class="form-group">
-                {{ form.photo.errors }}
+                
                 <label for="{{ form.photo.id_for_label }}">{{ form.photo.label }}</label>                    
                 {% render_field form.photo class+="form-control-file" type="file"  %}
+                {{ form.photo.errors }}
             </div>
 
             <div class="form-group">
-                {{ form.phone.errors }}
+                
                 <label for="{{ form.phone.id_for_label }}">{{ form.phone.label }}</label>                    
                 {% render_field form.phone class+="form-control-file" type="tel"  %}
+                {{ form.phone.errors }}
+            </div> 
+
+            <div class="form-group">
+                
+                <label for="{{ form.individual_registration.id_for_label }}">{{ form.individual_registration.label }}</label>                    
+                {% render_field form.individual_registration class+="form-control-file" type="tel"  %}
+                {{ form.individual_registration.errors }}
+            </div> 
+
+            <div class="form-group">
+                
+                <label for="{{ form.military_designation.id_for_label }}">{{ form.military_designation.label }}</label>                    
+                {% render_field form.military_designation class+="form-control-file" %}
+                {{ form.military_designation.errors }}
+            </div> 
+
+            <div class="form-group">
+                
+                <label for="{{ form.military_group.id_for_label }}">{{ form.military_group.label }}</label>                    
+                {% render_field form.military_group class+="form-control-file" %}
+                {{ form.military_group.errors }}
+            </div> 
+
+            <div class="form-group">                
+                <label for="{{ form.military_specialty.id_for_label }}">{{ form.military_specialty.label }}</label>                    
+                {% render_field form.military_specialty class+="form-control-file " %}
+                {{ form.military_specialty.errors }}
+            </div> 
+
+            <div class="form-group">
+                {{ form.military_war_name.errors }}
+                <label for="{{ form.military_war_name.id_for_label }}">{{ form.military_war_name.label }}</label>                    
+                {% render_field form.military_war_name class+="form-control-file" %}
+            </div> 
+
+            <div class="form-group">
+                {{ form.military_health_number.errors }}
+                <label for="{{ form.military_health_number.id_for_label }}">{{ form.military_health_number.label }}</label>                    
+                {% render_field form.military_health_number class+="form-control-file" %}
+            </div> 
+
+            <div class="form-group">
+                {{ form.military_validity_health_inspection.errors }}
+                <label for="{{ form.military_validity_health_inspection.id_for_label }}">{{ form.military_validity_health_inspection.label }}</label>                    
+                {% render_field form.military_validity_health_inspection class+="form-control-file military_validity_health_inspection_field" %}
+            </div> 
+
+            <div class="form-group">
+                {{ form.military_last_health_inspection.errors }}
+                <label for="{{ form.military_last_health_inspection.id_for_label }}">{{ form.military_last_health_inspection.label }}</label>                    
+                {% render_field form.military_last_health_inspection class+="form-control-file military_last_health_inspection_field"  %}
+            </div> 
+
+            <div class="form-group">
+                {{ form.military_id.errors }}
+                <label for="{{ form.military_id.id_for_label }}">{{ form.military_id.label }}</label>                    
+                {% render_field form.military_id class+="form-control-file" %}
+            </div> 
+
+            <div class="form-group">
+                {{ form.military_technical_qualification_certificate.errors }}
+                <label for="{{ form.military_technical_qualification_certificate.id_for_label }}">{{ form.military_technical_qualification_certificate.label }}</label>                    
+                {% render_field form.military_technical_qualification_certificate class+="form-control-file" %}
             </div> 
                                 
         </div>
@@ -45,3 +109,28 @@
     </div>
 
 {% endblock %}
+
+{% block scripts %}
+
+<script>
+    // flatpickr
+    window.addEventListener("DOMContentLoaded", function () {
+        flatpickr(".military_last_health_inspection_field", {
+            enableTime: true,
+            enableSeconds: true,
+            dateFormat: "d/m/Y",
+            "locale": "pt" 
+        });
+    });
+
+    window.addEventListener("DOMContentLoaded", function () {
+        flatpickr(".military_validity_health_inspection_field", {
+            enableTime: true,
+            enableSeconds: true,
+            dateFormat: "d/m/Y",
+            "locale": "pt" 
+        });
+    });
+    
+</script>
+{% endblock scripts %}
