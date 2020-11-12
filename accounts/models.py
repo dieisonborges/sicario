@@ -50,9 +50,10 @@ class UserProfile(models.Model):
     military_last_health_inspection = models.DateField('Data da Última da INSPSAU', default=datetime.now)
     military_id = models.CharField('Identidade Funcional', default='000000', max_length=6)
     military_technical_qualification_certificate = models.CharField('Certificado de Habilitação Técnica - CHT', default='000000', max_length=6) 
-
     user = models.OneToOneField(User, on_delete=models.CASCADE, related_name='profile')
     #user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE,  related_name='profile')
+    created_at = models.DateTimeField('Criado em', auto_now_add=True)
+    updated_at = models.DateTimeField('Alterado em', auto_now=True)
 
     class Meta:
         verbose_name = 'Perfil do Usuário'

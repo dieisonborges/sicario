@@ -47,7 +47,7 @@ class Action(models.Model):
     ticket = models.ForeignKey(Ticket, on_delete=models.CASCADE, related_name = "actions")
     #user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
     user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='actions')
-    short_description = models.CharField('Título',max_length=50)
+    short_description = models.CharField('Título', max_length=50)
     description = models.TextField('Descrição')
     docfile = models.FileField('Arquivo', upload_to=path_and_rename, null=True)
     time = models.IntegerField('Tempo Utilizado', default=0) #time used in the task in minutes
