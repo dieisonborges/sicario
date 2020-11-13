@@ -127,19 +127,23 @@
             <li class="nav-item">
                 <a href="{% url 'core:index' %}" class="nav-link">
                   <i class="nav-icon fas fa-tachometer-alt"></i>
-                  <p>
-                    Dashboard
-                    <span class="right badge badge-info">Home</span>
-                  </p>
+                  <p> Dashboard <span class="right badge badge-info">Home</span></p>
                 </a>
             </li>        
                     
             <li class="nav-item">
                 <a href="{% url 'tickets:index_tickets' %}" class="nav-link">
                 <i class="nav-icon fas fa-tasks"></i>
-                <p>Tickets</p>
+                <p> Tickets</p>
                 </a>
-            </li>         
+            </li>  
+            
+            <li class="nav-item">
+                <a href="{% url 'equipments:index_equipments' %}" class="nav-link">
+                  <i class="nav-icon fas fa-satellite-dish"></i>
+                <p> Equipamentos</p>
+                </a>
+            </li>  
           
           
         </ul>

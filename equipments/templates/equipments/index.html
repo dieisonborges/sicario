@@ -1,0 +1,171 @@
+{% extends "base.html" %}
+
+{% block content %}
+    <div class="row">
+      <section class="content-header">
+        <div class="container-fluid">
+          <div class="row mb-2">
+            <div class="col-sm-6">
+              <h1><a href="{% url 'equipments:index_equipments' %}">Equipamentos</a></h1>
+            </div>            
+          </div>
+        </div><!-- /.container-fluid -->
+      </section>
+
+    </div>
+    <div class="row">
+      <div class="col-12 col-sm-6 col-md-3">
+        <div class="info-box">          
+          <a href="{% url 'equipments:filter_equipment_status' 1 %}"  class="info-box-icon bg-success elevation-1">
+              <i class="fas fa-satellite-dish"></i>
+          </a>
+          <div class="info-box-content">
+            <span class="info-box-text">Operacionais</span>
+            <span class="info-box-number">{{equipments_count_operational}}</span>
+          </div>
+          <!-- /.info-box-content -->
+        </div>
+        <!-- /.info-box -->
+      </div>
+      <!-- /.col -->
+      <div class="col-12 col-sm-6 col-md-3">
+        <div class="info-box mb-3">
+          <a href="{% url 'equipments:filter_equipment_status' 2 %}" class="info-box-icon bg-warning elevation-1">
+            <i class="fas fa-satellite-dish"></i>
+          </a>
+
+          <div class="info-box-content">
+            <span class="info-box-text">Inoperância Parcial</span>
+            <span class="info-box-number">{{equipments_count_partial_dead}}</span>
+          </div>
+          <!-- /.info-box-content -->
+        </div>
+        <!-- /.info-box -->
+      </div>
+      <!-- /.col -->
+
+      
+      <div class="col-12 col-sm-6 col-md-3">
+        <div class="info-box mb-3">
+          <a href="{% url 'equipments:filter_equipment_status' 3 %}" class="info-box-icon bg-danger elevation-1">
+            <i class="fas fa-satellite-dish"></i>
+          </a>
+
+          <div class="info-box-content">
+            <span class="info-box-text">Inoperância Total</span>
+            <span class="info-box-number">{{equipments_count_dead}}</span>
+          </div>
+          <!-- /.info-box-content -->
+        </div>
+        <!-- /.info-box -->
+      </div>
+      <!-- /.col -->
+
+      <div class="col-12 col-sm-6 col-md-3">
+        <div class="info-box mb-3">
+          <a href="{% url 'equipments:index_equipments' %}" class="info-box-icon bg-info elevation-1">
+            <i class="fas fa-satellite-dish"></i>
+          </a>
+
+          <div class="info-box-content">
+            <span class="info-box-text">Todos</span>
+            <span class="info-box-number">{{equipments.count}}</span>
+          </div>
+          <!-- /.info-box-content -->
+        </div>
+        <!-- /.info-box -->
+      </div>
+      <!-- /.col -->
+    </div>
+
+    
+
+
+    <div class="card card-info">
+      
+      <div class="card-body">
+
+        <form id="search" action="{% url 'equipments:search_equipment' %}" method="GET" >
+          <div class="input-group input-group-sm">            
+            
+            <input type="text" class="form-control" name="search" placeholder="Buscar" value="{{ request.GET.search }}">
+            <span class="input-group-append">
+              <button type="submit" class="btn btn-info btn-flat" form="search"><i class="fas fa-search"></i></button>
+            </span>
+          </div>
+        </form>
+
+      </div>
+      <!-- /.card-body -->
+    </div>
+
+    <div class="row">
+          <div class="col-12">
+            <div class="card">
+              <div class="card-header  float-left">
+                <h3 class="card-title"><i class="fas fa-tasks"></i> Equipamentos <a href="{% url 'equipments:create_equipment' %}" class="btn btn-info btn-xs"><i class="fas fa-plus"></i> Novo</a></h3> 
+                
+              </div>
+              <!-- /.card-header -->
+              <div class="card-body table-responsive p-0">
+                <table class="table table-hover text-nowrap">
+                  <thead>
+                    <tr>
+                      <th>#</th>
+                      <th>Situação</th>
+                      <th>Nome</th>
+                      <th>Descrição</th>                      
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {% if equipments %}                        
+                        {% for equipment in equipments %}
+                            <tr> 
+                                <td>
+                                    <a href="{% url 'equipments:read_equipment' equipment.id %}">
+                                        {{ equipment.id }}
+                                    </a>
+                                </td>
+
+                                <td>
+                                  <a href="{% url 'equipments:read_equipment' equipment.id %}">
+                                    {% if equipment.status == '1' %}
+                                      <span class="badge badge-success">{{equipment.get_status_display}}</span>
+                                    {% elif equipment.status == '2' %}
+                                      <span class="badge badge-warning">{{equipment.get_status_display}}</span>
+                                    {% else %}
+                                      <span class="badge badge-danger">{{equipment.get_status_display}}</span>
+                                    {% endif %}
+                                  </a>
+                               </td>
+                                                               
+                                <td>
+                                    <a href="{% url 'equipments:read_equipment' equipment.id %}">
+                                        {{ equipment.name }}
+                                    </a>
+                                </td>
+                                <td>
+                                    <a href="{% url 'equipments:read_equipment' equipment.id %}">
+                                        {{ equipment.description|slice:":30" }}
+                                    </a>
+                                </td>                         
+                                
+                            </tr>
+                        {% endfor %}                        
+                    {% else %}
+                        <tr>
+                            <td colspan="5">Nenhum Ticket Encontrado.</td>                            
+                        </tr>
+                    {% endif %}                    
+                    
+                  </tbody>
+                </table>
+              </div>
+              <!-- /.card-body -->
+            </div>
+            <!-- /.card -->
+          </div>
+        </div>
+        <!-- /.row -->
+    
+{% endblock %}

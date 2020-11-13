@@ -57,7 +57,7 @@ PROJECT_APPS = [
     'accounts.apps.AccountsConfig',
     'tickets.apps.TicketsConfig',
     'teams.apps.TeamsConfig',
-    #'equipments.apps.EquipmentsConfig',
+    'equipments.apps.EquipmentsConfig',
 ]
 
 INSTALLED_APPS = DJANGO_APPS + THIRD_APPS + PROJECT_APPS

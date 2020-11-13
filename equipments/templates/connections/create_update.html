@@ -1,0 +1,88 @@
+{% extends "base.html" %}
+
+{% load widget_tweaks %}
+
+{% block content %}
+
+    <div class="fieldWrapper">
+        {{ form.subject.errors }}
+        {{ form.subject.label_tag }}
+        {{ form.subject }}
+    </div>    
+
+    <div class="card card-default">
+        <div class="card-header">
+        <h3 class="card-title"><i class="fas fa-tasks"></i> Ação</h3>
+        </div>
+        <!-- /.card-header -->
+        <!-- form start -->
+        <form method="POST" action="." enctype="multipart/form-data">
+        {% csrf_token %}
+        <input type="hidden" value="{{ ticket_id }}" name="ticket_id">
+        
+        {{ form.non_field_errors }}
+        <div class="card-body">
+            <div class="form-group">
+            {{ form.short_description.errors }}
+            <label for="{{ form.short_description.id_for_label }}">{{ form.short_description.label }}</label>                    
+            {% render_field form.short_description class+="form-control"  %}
+            </div>
+            <div class="form-group">
+            {{ form.description.errors }}
+            <label for="{{ form.description.id_for_label }}">{{ form.description.label }}</label>                    
+            {% render_field form.description class+="form-control"  %}
+            </div>  
+            <div class="form-group"> 
+            {{ form.docfile.errors }}
+            <label for="{{ form.docfile.id_for_label }}">{{ form.docfile.label }}</label>                    
+            {% render_field form.docfile class+="form-control-file"  %}
+            </div>
+            {{ form.time.errors }}
+            <label for="{{ form.time.id_for_label }}">{{ form.time.label }}</label>
+            <span id="set0hour" class="btn btn-default btn-xs">0h</span>
+            <span id="set1hour" class="btn btn-default btn-xs">1h</span>
+            <span id="set2hour" class="btn btn-default btn-xs">2h</span>
+            <span id="set3hour" class="btn btn-default btn-xs">3h</span>
+            <span id="set4hour" class="btn btn-default btn-xs">4h</span>
+            <span id="set5hour" class="btn btn-default btn-xs">5h</span>   
+            <span id="set6hour" class="btn btn-default btn-xs">6h</span>              
+            {% render_field form.time class+="form-control-file" %}
+            </div>                
+        </div>
+        <!-- /.card-body -->
+
+        <div class="card-footer">
+            <button type="submit" class="btn btn-primary"><i class="fas fa-save"></i> Salvar</button>
+        </div>
+        </form>
+    </div>
+
+{% endblock content %}
+
+{% block scripts %}
+
+<script> 
+    $("#set0hour").click(function(event) { 
+        $('#id_time').val("0"); 
+    });
+    $("#set1hour").click(function(event) { 
+        $('#id_time').val("60"); 
+    });
+    $("#set2hour").click(function(event) { 
+        $('#id_time').val("120"); 
+    });
+    $("#set3hour").click(function(event) { 
+        $('#id_time').val("180"); 
+    });
+    $("#set4hour").click(function(event) { 
+        $('#id_time').val("240"); 
+    });
+    $("#set5hour").click(function(event) { 
+        $('#id_time').val("300"); 
+    }); 
+    $("#set6hour").click(function(event) { 
+        $('#id_time').val("360"); 
+    }); 
+</script> 
+
+{% endblock scripts %}
