@@ -7,14 +7,14 @@ from datetime import datetime
 class Equipment(models.Model):
 
     CHOICE_STATUS = (
-        ('1', 'Operacional'),
-        ('2', 'Inoperante Parcialmente'),
-        ('3', 'Inoperante Total'),        
+        ('success', 'Operacional'),
+        ('warning', 'Inoperante Parcialmente'),
+        ('danger', 'Inoperante Total'),      
     )
 
     name = models.CharField('Nome', max_length=200)
     description = models.TextField('Descrição') 
-    status = models.CharField('Situação', max_length=1, choices=CHOICE_STATUS, default=1)
+    status = models.CharField('Situação', max_length=7, choices=CHOICE_STATUS, default=1)
     icon = models.CharField('Ícone', null=True, max_length=200)    
     created_at = models.DateTimeField('Criado em', auto_now_add=True)
     updated_at = models.DateTimeField('Alterado em', auto_now=True)

@@ -11,7 +11,7 @@ class TicketForm(forms.ModelForm):
     #deadline = forms.CharField(label='Prazo', required=True)
     class Meta:
         model = Ticket
-        fields = ('short_description', 'description', 'docfile', 'teams', 'deadline')
+        fields = ('short_description', 'description', 'docfile', 'teams', 'deadline', 'equipments')
         #exclude = ()
 
 class ActionForm(forms.ModelForm): 

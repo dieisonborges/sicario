@@ -42,6 +42,11 @@
             {% render_field form.teams class+="form-control  js-teams-select2-multiple"  %}
             </div>
             <div class="form-group"> 
+                {{ form.equipments.errors }}
+                <label for="{{ form.equipments.id_for_label }}">Equipamentos</label>                    
+                {% render_field form.equipments class+="form-control  js-equipments-select2-multiple"  %}
+                </div>
+            <div class="form-group"> 
                 {{ form.deadline.errors }}
                 <label for="{{ form.deadline.id_for_label }}">{{ form.deadline.label }}</label>                    
                 {% render_field form.deadline class+="form-control deadlinedatetimefield"  %}
@@ -66,6 +71,12 @@
             theme: "classic"
         });
     });
+
+    $(document).ready(function() {
+        $('.js-equipments-select2-multiple').select2({
+            theme: "classic"
+        });
+    });    
 </script>  
 <script>
     // flatpickr

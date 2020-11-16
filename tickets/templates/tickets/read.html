@@ -35,21 +35,41 @@
                   {% endfor %}
                 </div>
             </div>
-            <div class="row">
-              <h6 class="card-title mb-3 mt-3">
-                  <b><i class="fas fa-clock"></i>  Prazo: </b>                  
-                  {% if deadline  %}
-                  <span class="badge badge-danger">{{ ticket.deadline }}</span>
-                  <div class="ribbon-wrapper ribbon-xl">
-                    <div class="ribbon bg-danger">
-                      Prazo Esgotado
+            <div class="card-text">
+                Equipamentos:
+                
+              <div class="row">
+                  {% for equipment in ticket.equipments.all %}
+                  <a href="{% url 'equipments:read_equipment' equipment.pk %}" class="info-box m-3 col-md-3 bg-{{ equipment.status }}">               
+                    <span class="info-box-icon">                          
+                        <i class="{{equipment.icon|default:'fas fa-microchip'}}"></i>                                                   
+                    </span>    
+                    <div class="info-box-content">
+                      <span class="info-box-text">
+                          {{ equipment }}
+                      </span>
+                      <span class="info-box-number"><small>{{ equipment.get_status_display }}</small></span>
                     </div>
-                  </div>
-                  {% else %}
-                  <span class="badge badge-success">{{ ticket.deadline }}</span>
-                  {% endif %}
-              </h6>
-            </div>
+                  </a>          
+                  
+                  {% endfor %}
+                    
+              </div>
+              <div class="row">
+                <h6 class="card-title mb-3 mt-3">
+                    <b><i class="fas fa-clock"></i>  Prazo: </b>                  
+                    {% if deadline  %}
+                    <span class="badge badge-danger">{{ ticket.deadline }}</span>
+                    <div class="ribbon-wrapper ribbon-xl">
+                      <div class="ribbon bg-danger">
+                        Prazo Esgotado
+                      </div>
+                    </div>
+                    {% else %}
+                    <span class="badge badge-success">{{ ticket.deadline }}</span>
+                    {% endif %}
+                </h6>
+              </div>
             
               
           </div>

@@ -6,66 +6,34 @@
         <div class="card">
           
           <div class="card-header">
-          <h4 class="card-title m-0 text-xl"><b>Ticket </b>#{{ ticket.protocol }}</h4>
-          
-          {% if ticket.status %}
-              <h4><span class="badge badge-danger ml-3">Aberto</span></h4>
-          {% else %}
-              <h4><span class="badge badge-success ml-3">Fechado</span></h4>
-          {% endif %}
-          
+            <h4 class="card-title m-0 text-xl"><b>{{equipment}} </b></h4>
           </div>
           <div class="card-body">
             <h6 class="card-title mb-3 text-lg">
-              <b>{{ ticket.short_description }}</b>
+              <b>{{ equipment.description }}</b>
             </h6>
             <div class="card-text">
-                 Equipes envolvidas:
+                Situação do Equipamento:
                  
-                <div class="row">
-                  {% for team in ticket.teams.all %}
-                  <div class="info-box m-3 col-md-3 bg-secondary">
-                    <span class="info-box-icon"><i class="fas fa-users"></i></span>    
-                    <div class="info-box-content">
-                      <span class="info-box-text">{{ team }}</span>
-                      <span class="info-box-number">{{ team.description }}</span>
-                    </div>
-                    <!-- /.info-box-content -->
-                  </div> 
-                  {% endfor %}
+                <div class="row mt-3">
+                  <span class="btn btn-{{ equipment.status }}">
+                    {{ equipment.get_status_display }}
+                  </span>
                 </div>
-            </div>
-            <div class="row">
-              <h6 class="card-title mb-3 mt-3">
-                  <b><i class="fas fa-clock"></i>  Prazo: </b>                  
-                  {% if deadline  %}
-                  <span class="badge badge-danger">{{ ticket.deadline }}</span>
-                  <div class="ribbon-wrapper ribbon-xl">
-                    <div class="ribbon bg-danger">
-                      Prazo Esgotado
-                    </div>
-                  </div>
-                  {% else %}
-                  <span class="badge badge-success">{{ ticket.deadline }}</span>
-                  {% endif %}
-              </h6>
-            </div>
-            
-              
+            </div>              
           </div>
           <div class="card-footer">
               <p class="card-text">
-                <i class="fas fa-user"></i> Criado por <b>{{ ticket.user.first_name }}</b> 
-                em <b>{{ ticket.created_at }}</b>, última alteração em: <b>{{ ticket.created_at }}</b>
+                <small>
+                  <i class="fas fa-user"></i> Criado em <b>{{ equipment.created_at }}</b>, última alteração em: <b>{{ equipment.created_at }}</b>
+                </small>
               </p>              
           </div>
         </div>
                
     </div>
 
-
-    <div class="col-md-12">
-       
+    <div class="col-md-12">       
 
     <!-- Main content -->
     <section class="content">
@@ -73,73 +41,16 @@
         
         <!-- Timelime example  -->
         <div class="row">
-          <div class="col-md-12">
+          <h4 class="m-3"><b>Tickets do Equipamento </b></h4>
+          <div class="col-md-12">            
             <!-- The time line -->
             <div class="timeline">
 
-                <!-- timeline time label -->
-                <div class="time-label">
-                    <span class="bg-red"><small>Aberto em: </small>{{ ticket.created_at|date:"d M Y" }}</span>
-                </div>
-                <!-- /.timeline-label -->
-                <!-- timeline item -->
-                <div>
-                    <i class="fas fa-exclamation-triangle bg-red"></i>
-                    <div class="timeline-item">
-                      <span class="time"><i class="fas fa-clock"></i>  Abertura: <b>{{ ticket.created_at|date:"H:i" }}</b></span>
-                      <h3 class="timeline-header">                      
-                        <a href="#">{{ ticket.user.first_name }}:</a> 
-                        {{ ticket.short_description }}
-                        <span class="badge badge-warning"><i class="far fa-star"></i> Inicial</span>
-                      </h3>
-
-                      <div class="timeline-body p-4">
-                        <p class="text-break">{{ ticket.description }}</p>
-                        {% if ticket.docfile %}
-                        <div class="row col-md-12 mx-2">
-                          {% if ticket.DocFileType.mime == 'application/pdf' %}
-                            <a href="{{ ticket.docfile.url }}" class="btn btn-default btn-lg" target="_blank">
-                              <i class="fas fa-file-pdf"></i> {{ ticket.DocFileType.extension.upper }}
-                            </a>
-                          {% elif ticket.DocFileTypeGroup == 'image' %}
-                            <a href="{{ ticket.docfile.url }}" target="_blank">
-                              <img src="{{ ticket.docfile.url }}" width="200px">
-                            </a>               
-                          {% else %}                  
-                            <a href="{{ ticket.docfile.url }}" class="btn btn-default btn-lg" target="_blank">
-                              <i class="far fa-file"></i> {{ ticket.DocFileType.extension.upper }}
-                            </a>
-                          {% endif %}  
-                        </div>
-                        {% endif %}
-                      </div>                     
-                          
-                                          
-                      <div class="timeline-footer">                            
-                          {% if ticket.status  %}
-                            {% if ticket.user == user  %}
-                            <a href="{% url 'tickets:delete_ticket' ticket.id %}" class="btn btn-danger btn-sm confirm-delete-ticket" data-toggle="modal" data-target="#confirmDeleteTicketModal" id="deleteButton-{{ ticket.id }}">
-                              <i class="far fa-trash-alt"></i>
-                            </a>
-                            <a href="{% url 'tickets:update_ticket' ticket.id %}" class="btn btn-info btn-sm">
-                              <i class="fas fa-edit"></i>
-                            </a>
-                            {% endif %}
-                          {% endif %}
-                          <span class="btn btn-sm btn-default float-right m-1" id="actions_show"><i class="fas fa-plus"></i></span>
-                          <span class="btn btn-sm btn-default float-right m-1" id="actions_hide"><i class="fas fa-minus"></i></span>
-                      </div>
-                    </div>
-                </div>
-                <!-- END timeline item -->   
-
-
-              {% for action in ticket.actions.all %}
-
+              {% for ticket in equipment.tickets.all %}
 
                 <!-- timeline time label -->
                 <div class="time-label">
-                    <span class="bg-info">{{ action.created_at|date:"d M Y" }}</span>
+                    <span class="bg-info">{{ ticket.created_at|date:"d M Y" }}</span>
                 </div>
                 <!-- /.timeline-label -->
                 <!-- timeline item -->
@@ -147,33 +58,42 @@
                   <!-- /.box-tools -->
                     <i class="fas fa-info-circle bg-info"></i>
                     <div class="timeline-item">                      
-                    <a data-toggle="collapse" href="#collapseActions{{ action.pk }}" class="btn btn-default btn-sm float-right m-1">
+                    <a data-toggle="collapse" href="#collapseActions{{ ticket.pk }}" class="btn btn-default btn-sm float-right m-1">
                       <i class="fas fa-expand-alt"></i>
                     </a>
                     <span class="time">
-                      <i class="fas fa-clock"></i> Abertura: <b>{{ action.created_at|date:"H:i" }}</b>
+                      <i class="fas fa-clock"></i> <b>{{ ticket.created_at }}</b>
                     </span>
-                    <h3 class="timeline-header"><a href="#">{{ action.user.first_name }}:</a> {{ action.short_description }}</h3>
+                    <h3 class="timeline-header">
+                      <a href="{% url 'tickets:read_ticket' ticket.pk %}">{{ ticket.user.first_name }}: 
+                        <span class="text-gray-dark">{{ticket.short_description }}</span>
+                        {% if ticket.status %}
+                            <span class="badge badge-danger ml-1">Aberto</span>
+                        {% else %}
+                            <span class="badge badge-success ml-1">Fechado</span>
+                        {% endif %}
+                      </a>
+                    </h3>
                     
-                    <div class="timeline-body collapse actions" id="collapseActions{{ action.pk }}">
+                    <div class="timeline-body collapse tickets" id="collapseActions{{ ticket.pk }}">
                         <div class="row mx-2 mb-4">
-                          <p class="text-break">{{ action.description }}</p>
+                          <p class="text-break">{{ ticket.description }}</p>
                         </div>
 
                         <div class="row mx-2">
-                              {% if action.docfile %}
+                              {% if ticket.docfile %}
 
-                                  {% if action.DocFileType.mime == 'application/pdf' %}
-                                  <a href="{{ action.docfile.url }}" class="btn btn-default btn-lg" target="_blank">
-                                    <i class="fas fa-file-pdf"></i> {{ action.DocFileType.extension.upper }}
+                                  {% if ticket.DocFileType.mime == 'application/pdf' %}
+                                  <a href="{{ ticket.docfile.url }}" class="btn btn-default btn-lg" target="_blank">
+                                    <i class="fas fa-file-pdf"></i> {{ ticket.DocFileType.extension.upper }}
                                   </a>
-                                  {% elif action.DocFileTypeGroup == 'image' %}
-                                  <a href="{{ action.docfile.url }}" target="_blank">
-                                    <img src="{{ action.docfile.url }}" width="200px">
+                                  {% elif ticket.DocFileTypeGroup == 'image' %}
+                                  <a href="{{ ticket.docfile.url }}" target="_blank">
+                                    <img src="{{ ticket.docfile.url }}" width="200px">
                                   </a>               
                                   {% else %}
-                                    <a href="{{ action.docfile.url }}" class="btn btn-default btn-lg" target="_blank">
-                                      <i class="far fa-file"></i> {{ action.DocFileType.extension.upper }}
+                                    <a href="{{ ticket.docfile.url }}" class="btn btn-default btn-lg" target="_blank">
+                                      <i class="far fa-file"></i> {{ ticket.DocFileType.extension.upper }}
                                     </a>
                                   {% endif %}                               
                                 
@@ -181,23 +101,11 @@
                             </div>
 
                             <div class="timeline-footer">
-                                {% if ticket.status  %}
-                                    {% if action.user == user  %}
-                                    <a href="{% url 'tickets:delete_action' ticket.id action.id %}" class="btn btn-danger btn-xs confirm-delete-action" data-toggle="modal" data-target="#confirmDeleteActionModal" id="deleteActionButton-{{ action.id }}">
-                                      <i class="far fa-trash-alt"></i>
-                                    </a>
-                                    <a href="{% url 'tickets:update_action' ticket.id action.id %}" class="btn btn-info btn-xs"><i class="fas fa-edit"></i></a>
-                                    {% endif %}
-                                {% endif %}
+                                <a href="#" class="btn btn-danger btn-xs confirm-delete-ticket" data-toggle="modal" data-target="#confirmDeleteActionModal" id="deleteActionButton-{{ ticket.id }}">
+                                  <i class="far fa-trash-alt"></i>
+                                </a>
                                 <span class="time float-right">
-                                  <small>
-                                    
-                                    {% if action.time %}
-                                      <i class="fas fa-clock"></i> Minutos Utilizados: <b>{{ action.time }}</b>m
-                                    {% endif %}
-                                      
-                                    
-                                  </small>
+                                  
                                 </span>
                           
                             </div> 
@@ -211,7 +119,7 @@
                {% endfor %}
                
               <div>
-                {% if ticket.status  %}
+                {% if equipment.status  %}
                 <i class="fas fa-clock bg-gray"></i>
                 {% else %}
                 <i class="far fa-check-circle bg-green"></i>
@@ -234,68 +142,68 @@
     <div class="col-md-12"> 
         <div class="row">
             <div class="col-md-12">
-                <a href="{% url 'tickets:update_ticket_team' ticket.id %}" class="btn btn-info float-right m-1 col-md-2">
+                <a href="#" class="btn btn-info float-right m-1 col-md-2">
                   <i class="fas fa-users"></i> Alterar Equipe
                 </a> 
-                {% if ticket.status  %}
-                    {% if ticket.user == user  %}
-                    <a href="{% url 'tickets:delete_ticket' ticket.id %}" class="btn btn-danger float-right m-1 col-md-2 confirm-delete-ticket" data-toggle="modal" data-target="#confirmDeleteTicketModal" id="deleteButton-{{ ticket.id }}"><i class="far fa-trash-alt"></i> Excluir Ticket</a>
-                    <a href="{% url 'tickets:update_ticket' ticket.id %}" class="btn btn-info float-right m-1 col-md-2"><i class="fas fa-edit"></i> Editar Ticket</a>
+                {% if equipment.status  %}
+                    {% if equipment.user == user  %}
+                    <a href="#" class="btn btn-danger float-right m-1 col-md-2 confirm-delete-equipment" data-toggle="modal" data-target="#confirmDeleteEquipmentModal" id="deleteButton-{{ equipment.id }}"><i class="far fa-trash-alt"></i> Excluir Equipment</a>
+                    <a href="#" class="btn btn-info float-right m-1 col-md-2"><i class="fas fa-edit"></i> Editar Equipment</a>
                     {% endif %}
-                <a href="{% url 'tickets:close_ticket' ticket.id %}" class="btn btn-info float-right m-1 col-md-2 confirm-close-ticket" data-toggle="modal" data-target="#confirmCloseTicketModal" id="closeButton-{{ ticket.id }}"><i class="fas fa-times"></i> Encerrar Ticket</a>
+                <a href="#" class="btn btn-info float-right m-1 col-md-2 confirm-close-equipment" data-toggle="modal" data-target="#confirmCloseEquipmentModal" id="closeButton-{{ equipment.id }}"><i class="fas fa-times"></i> Encerrar Equipment</a>
 
-                <a href="{% url 'tickets:create_action' ticket.id %}" class="btn btn-info float-right m-1 col-md-2"><i class="fas fa-plus"></i> Nova Ação</a>
+                <a href="#" class="btn btn-info float-right m-1 col-md-2"><i class="fas fa-plus"></i> Nova Ação</a>
                 {% else %}
-                <a href="{% url 'tickets:open_ticket' ticket.id %}" class="btn btn-info float-right m-1 col-md-2 confirm-open-ticket" data-toggle="modal" data-target="#confirmOpenTicketModal" id="openButton-{{ ticket.id }}"><i class="fas fa-redo"></i> Reabrir Ticket</a>
+                <a href="#" class="btn btn-info float-right m-1 col-md-2 confirm-open-equipment" data-toggle="modal" data-target="#confirmOpenEquipmentModal" id="openButton-{{ equipment.id }}"><i class="fas fa-redo"></i> Reabrir Equipment</a>
                 {% endif %}   
                                            
             </div>
         </div>
     </div>
 
-    {% include 'tickets/modals.html' %}
+    {% include 'equipments/modals.html' %}
     
 
 {% endblock content %}
 
 {% block scripts %}
 
-<!-- Modal Open Ticket -->
+<!-- Modal Open Equipment -->
 <script type="text/javascript"> 
-    $(document).on('click', '.confirm-open-ticket', function(){
-      $('#confirmOpenTicketModal').attr('caller-id', $(this).attr('id'));
+    $(document).on('click', '.confirm-open-equipment', function(){
+      $('#confirmOpenEquipmentModal').attr('caller-id', $(this).attr('id'));
     })
-    $(document).on('click', '#confirmOpenTicketButtonModal', function(){
-      var caller = $('#confirmOpenTicketButtonModal').closest('.modal').attr('caller-id');
+    $(document).on('click', '#confirmOpenEquipmentButtonModal', function(){
+      var caller = $('#confirmOpenEquipmentButtonModal').closest('.modal').attr('caller-id');
       window.location = $('#'.concat(caller)).attr('href');
     })
   </script>
 
-<!-- Modal Close Ticket -->
+<!-- Modal Close Equipment -->
 <script type="text/javascript"> 
-  $(document).on('click', '.confirm-close-ticket', function(){
-    $('#confirmCloseTicketModal').attr('caller-id', $(this).attr('id'));
+  $(document).on('click', '.confirm-close-equipment', function(){
+    $('#confirmCloseEquipmentModal').attr('caller-id', $(this).attr('id'));
   })
-  $(document).on('click', '#confirmCloseTicketButtonModal', function(){
-    var caller = $('#confirmCloseTicketButtonModal').closest('.modal').attr('caller-id');
+  $(document).on('click', '#confirmCloseEquipmentButtonModal', function(){
+    var caller = $('#confirmCloseEquipmentButtonModal').closest('.modal').attr('caller-id');
     window.location = $('#'.concat(caller)).attr('href');
   })
 </script>
 
-<!-- Modal Delete Ticket -->
+<!-- Modal Delete Equipment -->
 <script type="text/javascript"> 
-    $(document).on('click', '.confirm-delete-ticket', function(){
-      $('#confirmDeleteTicketModal').attr('caller-id', $(this).attr('id'));
+    $(document).on('click', '.confirm-delete-equipment', function(){
+      $('#confirmDeleteEquipmentModal').attr('caller-id', $(this).attr('id'));
     })
-    $(document).on('click', '#confirmDeleteTicketButtonModal', function(){
-      var caller = $('#confirmDeleteTicketButtonModal').closest('.modal').attr('caller-id');
+    $(document).on('click', '#confirmDeleteEquipmentButtonModal', function(){
+      var caller = $('#confirmDeleteEquipmentButtonModal').closest('.modal').attr('caller-id');
       window.location = $('#'.concat(caller)).attr('href');
     })
   </script>
 
 <!-- Modal Delete Action -->
 <script type="text/javascript"> 
-  $(document).on('click', '.confirm-delete-action', function(){
+  $(document).on('click', '.confirm-delete-ticket', function(){
     $('#confirmDeleteActionModal').attr('caller-id', $(this).attr('id'));
   })
   $(document).on('click', '#confirmDeleteActionButtonModal', function(){
@@ -308,13 +216,13 @@
 <script type="text/javascript"> 
 
   //Open All
-  $("#actions_show").click(function(){
-    $('.actions').collapse('show')
+  $("#tickets_show").click(function(){
+    $('.tickets').collapse('show')
   });
 
   //Close All
-  $("#actions_hide").click(function(){
-    $('.actions').collapse('hide')
+  $("#tickets_hide").click(function(){
+    $('.tickets').collapse('hide')
   }); 
 </script>
 

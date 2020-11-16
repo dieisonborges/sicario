@@ -88,14 +88,9 @@ def create_equipment(request):
 
 @login_required
 def read_equipment(request, equipment_id):
-    equipment = get_object_or_404(Equipment, pk=equipment_id)
-    if equipment.deadline.isoformat() < datetime.now().isoformat():
-        deadline = True #on time
-    else:
-        deadline = False #timer over
+    equipment = get_object_or_404(Equipment, pk=equipment_id)    
     context = {
         'equipment': equipment,
-        'deadline': deadline,
     }
     return render(request, 'equipments/read.html', context)
 
