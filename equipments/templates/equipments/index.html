@@ -16,7 +16,7 @@
     <div class="row">
       <div class="col-12 col-sm-6 col-md-3">
         <div class="info-box">          
-          <a href="{% url 'equipments:filter_equipment_status' 1 %}"  class="info-box-icon bg-success elevation-1">
+          <a href="{% url 'equipments:filter_equipment_status' 'success' %}"  class="info-box-icon bg-success elevation-1">
               <i class="fas fa-satellite-dish"></i>
           </a>
           <div class="info-box-content">
@@ -30,7 +30,7 @@
       <!-- /.col -->
       <div class="col-12 col-sm-6 col-md-3">
         <div class="info-box mb-3">
-          <a href="{% url 'equipments:filter_equipment_status' 2 %}" class="info-box-icon bg-warning elevation-1">
+          <a href="{% url 'equipments:filter_equipment_status' 'warning' %}" class="info-box-icon bg-warning elevation-1">
             <i class="fas fa-satellite-dish"></i>
           </a>
 
@@ -47,7 +47,7 @@
       
       <div class="col-12 col-sm-6 col-md-3">
         <div class="info-box mb-3">
-          <a href="{% url 'equipments:filter_equipment_status' 3 %}" class="info-box-icon bg-danger elevation-1">
+          <a href="{% url 'equipments:filter_equipment_status' 'danger' %}" class="info-box-icon bg-danger elevation-1">
             <i class="fas fa-satellite-dish"></i>
           </a>
 
@@ -129,13 +129,7 @@
 
                                 <td>
                                   <a href="{% url 'equipments:read_equipment' equipment.id %}">
-                                    {% if equipment.status == '1' %}
-                                      <span class="badge badge-success">{{equipment.get_status_display}}</span>
-                                    {% elif equipment.status == '2' %}
-                                      <span class="badge badge-warning">{{equipment.get_status_display}}</span>
-                                    {% else %}
-                                      <span class="badge badge-danger">{{equipment.get_status_display}}</span>
-                                    {% endif %}
+                                      <span class="badge badge-{{equipment.status}}">{{equipment.get_status_display}}</span>
                                   </a>
                                </td>
                                                                
@@ -154,7 +148,7 @@
                         {% endfor %}                        
                     {% else %}
                         <tr>
-                            <td colspan="5">Nenhum Ticket Encontrado.</td>                            
+                            <td colspan="5">Nenhum Equipamento Encontrado.</td>                            
                         </tr>
                     {% endif %}                    
                     

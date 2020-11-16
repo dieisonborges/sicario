@@ -99,7 +99,10 @@
       <!-- /.card-body -->
     </div>
 
-    <div class="row">
+
+
+
+     <div class="row">
           <div class="col-12">
             <div class="card">
               <div class="card-header  float-left">
@@ -190,3 +193,17 @@
         <!-- /.row -->
     
 {% endblock %}
+
+{% block scripts %}
+<!-- page script -->
+<script>
+  $(function () {
+    $("#example1").DataTable({
+      "responsive": true,
+      "autoWidth": false,
+      "paging": true,
+      "ordering": true,
+    });   
+  });
+</script>
+{% endblock scripts %}

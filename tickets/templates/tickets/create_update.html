@@ -21,35 +21,35 @@
         
         {{ form.non_field_errors }}
         <div class="card-body">
-            <div class="form-group">
-            {{ form.short_description.errors }}
+            <div class="form-group">            
             <label for="{{ form.short_description.id_for_label }}">{{ form.short_description.label }}</label>                    
             {% render_field form.short_description class+="form-control"  %}
+            {{ form.short_description.errors }}
             </div>
             <div class="form-group">
-            {{ form.description.errors }}
             <label for="{{ form.description.id_for_label }}">{{ form.description.label }}</label>                    
             {% render_field form.description class+="form-control"  %}
+            {{ form.description.errors }}
             </div>  
-            <div class="form-group"> 
-            {{ form.docfile.errors }}
+            <div class="form-group">
             <label for="{{ form.docfile.id_for_label }}">{{ form.docfile.label }}</label>                    
-            {% render_field form.docfile class+="form-control-file"  %}
+            {% render_field form.docfile class+="form-control-file"  %} 
+            {{ form.docfile.errors }}
             </div>
-            <div class="form-group"> 
-            {{ form.teams.errors }}
+            <div class="form-group">
             <label for="{{ form.teams.id_for_label }}">Equipe</label>                    
-            {% render_field form.teams class+="form-control  js-teams-select2-multiple"  %}
+            {% render_field form.teams class+="form-control  js-teams-select2-multiple"  %} 
+            {{ form.teams.errors }}
             </div>
-            <div class="form-group"> 
-                {{ form.equipments.errors }}
+            <div class="form-group">
                 <label for="{{ form.equipments.id_for_label }}">Equipamentos</label>                    
-                {% render_field form.equipments class+="form-control  js-equipments-select2-multiple"  %}
+                {% render_field form.equipments class+="form-control  js-equipments-select2-multiple"  %} 
+                {{ form.equipments.errors }}
                 </div>
-            <div class="form-group"> 
-                {{ form.deadline.errors }}
+            <div class="form-group">
                 <label for="{{ form.deadline.id_for_label }}">{{ form.deadline.label }}</label>                    
-                {% render_field form.deadline class+="form-control deadlinedatetimefield"  %}
+                {% render_field form.deadline class+="form-control deadlinedatetimefield"  %} 
+                {{ form.deadline.errors }}
             </div>
 
         </div>

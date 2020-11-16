@@ -30,7 +30,7 @@ class Ticket(models.Model):
     class Meta:
         verbose_name = "Ticket"
         verbose_name_plural = "Tickets"
-        ordering = ['id']
+        ordering = ['-id']
     
     def DocFileType(self):
         return filetype.guess(self.docfile.path)

@@ -6,10 +6,11 @@
         <div class="card">
           
           <div class="card-header">
-            <h4 class="card-title m-0 text-xl"><b>{{equipment}} </b></h4>
+            <span class="badge badge-info text-sm ml-1">Equipamento</span>
+            <h4 class="card-title m-0 text-xl"><b>{{equipment}}</b>  </h4>
           </div>
           <div class="card-body">
-            <h6 class="card-title mb-3 text-lg">
+            <h6 class="card-title mb-3 text-lg text-break">
               <b>{{ equipment.description }}</b>
             </h6>
             <div class="card-text">
@@ -17,6 +18,7 @@
                  
                 <div class="row mt-3">
                   <span class="btn btn-{{ equipment.status }}">
+                    <i class="far fa-compass"></i>
                     {{ equipment.get_status_display }}
                   </span>
                 </div>
@@ -42,90 +44,97 @@
         <!-- Timelime example  -->
         <div class="row">
           <h4 class="m-3"><b>Tickets do Equipamento </b></h4>
+          {% if equipment.tickets.count > 1 %}
           <div class="col-md-12">            
             <!-- The time line -->
-            <div class="timeline">
+            <div class="timeline"> 
+                {% for ticket in equipment.tickets.all %}
 
-              {% for ticket in equipment.tickets.all %}
-
-                <!-- timeline time label -->
-                <div class="time-label">
-                    <span class="bg-info">{{ ticket.created_at|date:"d M Y" }}</span>
-                </div>
-                <!-- /.timeline-label -->
-                <!-- timeline item -->
-                <div>                  
-                  <!-- /.box-tools -->
-                    <i class="fas fa-info-circle bg-info"></i>
-                    <div class="timeline-item">                      
-                    <a data-toggle="collapse" href="#collapseActions{{ ticket.pk }}" class="btn btn-default btn-sm float-right m-1">
-                      <i class="fas fa-expand-alt"></i>
-                    </a>
-                    <span class="time">
-                      <i class="fas fa-clock"></i> <b>{{ ticket.created_at }}</b>
-                    </span>
-                    <h3 class="timeline-header">
-                      <a href="{% url 'tickets:read_ticket' ticket.pk %}">{{ ticket.user.first_name }}: 
-                        <span class="text-gray-dark">{{ticket.short_description }}</span>
-                        {% if ticket.status %}
-                            <span class="badge badge-danger ml-1">Aberto</span>
-                        {% else %}
-                            <span class="badge badge-success ml-1">Fechado</span>
-                        {% endif %}
-                      </a>
-                    </h3>
-                    
-                    <div class="timeline-body collapse tickets" id="collapseActions{{ ticket.pk }}">
-                        <div class="row mx-2 mb-4">
-                          <p class="text-break">{{ ticket.description }}</p>
-                        </div>
-
-                        <div class="row mx-2">
-                              {% if ticket.docfile %}
-
-                                  {% if ticket.DocFileType.mime == 'application/pdf' %}
-                                  <a href="{{ ticket.docfile.url }}" class="btn btn-default btn-lg" target="_blank">
-                                    <i class="fas fa-file-pdf"></i> {{ ticket.DocFileType.extension.upper }}
-                                  </a>
-                                  {% elif ticket.DocFileTypeGroup == 'image' %}
-                                  <a href="{{ ticket.docfile.url }}" target="_blank">
-                                    <img src="{{ ticket.docfile.url }}" width="200px">
-                                  </a>               
-                                  {% else %}
-                                    <a href="{{ ticket.docfile.url }}" class="btn btn-default btn-lg" target="_blank">
-                                      <i class="far fa-file"></i> {{ ticket.DocFileType.extension.upper }}
-                                    </a>
-                                  {% endif %}                               
-                                
-                              {% endif %}
+                    <!-- timeline time label -->
+                    <div class="time-label">
+                        <span class="bg-info">{{ ticket.created_at|date:"d M Y" }}</span>
+                    </div>
+                    <!-- /.timeline-label -->
+                    <!-- timeline item -->
+                    <div>                  
+                      <!-- /.box-tools -->
+                        <i class="fas fa-ticket-alt bg-info"></i>
+                        <div class="timeline-item">                      
+                        <a data-toggle="collapse" href="#collapseActions{{ ticket.pk }}" class="btn btn-default btn-sm float-right m-1">
+                          <i class="fas fa-expand-alt"></i>
+                        </a>
+                        <span class="time">
+                          <i class="fas fa-clock"></i> <b>{{ ticket.created_at }}</b>
+                        </span>
+                        <h3 class="timeline-header">
+                          <a href="{% url 'tickets:read_ticket' ticket.pk %}">
+                            #{{ ticket.protocol }} 
+                            
+                            <span class="text-gray-dark">
+                              {{ ticket.user.first_name }}: {{ticket.short_description }}
+                            </span>
+                            {% if ticket.status %}
+                                <span class="badge badge-danger ml-1">Aberto</span>
+                            {% else %}
+                                <span class="badge badge-success ml-1">Fechado</span>
+                            {% endif %}
+                          </a>
+                        </h3>
+                        
+                        <div class="timeline-body collapse tickets" id="collapseActions{{ ticket.pk }}">
+                            <div class="row mx-2 mb-4">
+                              <p class="text-break">{{ ticket.description }}</p>
                             </div>
 
-                            <div class="timeline-footer">
-                                <a href="#" class="btn btn-danger btn-xs confirm-delete-ticket" data-toggle="modal" data-target="#confirmDeleteActionModal" id="deleteActionButton-{{ ticket.id }}">
-                                  <i class="far fa-trash-alt"></i>
-                                </a>
-                                <span class="time float-right">
-                                  
-                                </span>
-                          
-                            </div> 
+                            <div class="row mx-2">
+                                  {% if ticket.docfile %}
+
+                                      {% if ticket.DocFileType.mime == 'application/pdf' %}
+                                      <a href="{{ ticket.docfile.url }}" class="btn btn-default btn-lg" target="_blank">
+                                        <i class="fas fa-file-pdf"></i> {{ ticket.DocFileType.extension.upper }}
+                                      </a>
+                                      {% elif ticket.DocFileTypeGroup == 'image' %}
+                                      <a href="{{ ticket.docfile.url }}" target="_blank">
+                                        <img src="{{ ticket.docfile.url }}" width="200px">
+                                      </a>               
+                                      {% else %}
+                                        <a href="{{ ticket.docfile.url }}" class="btn btn-default btn-lg" target="_blank">
+                                          <i class="far fa-file"></i> {{ ticket.DocFileType.extension.upper }}
+                                        </a>
+                                      {% endif %}                               
+                                    
+                                  {% endif %}
+                                </div>
+
+                                
+                            </div>
+                        
+                                              
                         </div>
-                    
-                                           
                     </div>
-                </div>
-                <!-- END timeline item -->                
+                    <!-- END timeline item -->   
+                 
+                                
 
-               {% endfor %}
-               
-              <div>
-                {% if equipment.status  %}
-                <i class="fas fa-clock bg-gray"></i>
-                {% else %}
-                <i class="far fa-check-circle bg-green"></i>
-                {% endif %}
+                {% endfor %}
+                <div>
+                <i class="fas fa-flag-checkered bg-green"></i>
+              </div> 
 
+              {% else %}
+
+              <div class="col-md-12">
+                <span class="badge badge-primary text-lg"><i class="fas fa-not-equal"></i> Nenhum Ticket vinculado a este equipamento.</span>
               </div>
+
+                  
+                
+              {% endif %}
+                
+
+              
+               
+              
             </div>
           </div>
           <!-- /.col -->
@@ -136,27 +145,13 @@
     </section>
     <!-- /.content -->
   </div>
-
        
     <!-- Timelime example  -->
     <div class="col-md-12"> 
         <div class="row">
             <div class="col-md-12">
-                <a href="#" class="btn btn-info float-right m-1 col-md-2">
-                  <i class="fas fa-users"></i> Alterar Equipe
-                </a> 
-                {% if equipment.status  %}
-                    {% if equipment.user == user  %}
-                    <a href="#" class="btn btn-danger float-right m-1 col-md-2 confirm-delete-equipment" data-toggle="modal" data-target="#confirmDeleteEquipmentModal" id="deleteButton-{{ equipment.id }}"><i class="far fa-trash-alt"></i> Excluir Equipment</a>
-                    <a href="#" class="btn btn-info float-right m-1 col-md-2"><i class="fas fa-edit"></i> Editar Equipment</a>
-                    {% endif %}
-                <a href="#" class="btn btn-info float-right m-1 col-md-2 confirm-close-equipment" data-toggle="modal" data-target="#confirmCloseEquipmentModal" id="closeButton-{{ equipment.id }}"><i class="fas fa-times"></i> Encerrar Equipment</a>
-
-                <a href="#" class="btn btn-info float-right m-1 col-md-2"><i class="fas fa-plus"></i> Nova Ação</a>
-                {% else %}
-                <a href="#" class="btn btn-info float-right m-1 col-md-2 confirm-open-equipment" data-toggle="modal" data-target="#confirmOpenEquipmentModal" id="openButton-{{ equipment.id }}"><i class="fas fa-redo"></i> Reabrir Equipment</a>
-                {% endif %}   
-                                           
+                <a href="{% url 'equipments:delete_equipment' equipment.pk %}" class="btn btn-danger float-right m-1 col-md-2 confirm-delete-equipment" data-toggle="modal" data-target="#confirmDeleteEquipmentModal" id="deleteButton-{{ equipment.id }}"><i class="far fa-trash-alt"></i> Excluir Equipamento</a>
+                <a href="{% url 'equipments:update_equipment' equipment.pk %}" class="btn btn-info float-right m-1 col-md-2"><i class="fas fa-edit"></i> Editar Equipamento</a>   
             </div>
         </div>
     </div>
@@ -168,28 +163,6 @@
 
 {% block scripts %}
 
-<!-- Modal Open Equipment -->
-<script type="text/javascript"> 
-    $(document).on('click', '.confirm-open-equipment', function(){
-      $('#confirmOpenEquipmentModal').attr('caller-id', $(this).attr('id'));
-    })
-    $(document).on('click', '#confirmOpenEquipmentButtonModal', function(){
-      var caller = $('#confirmOpenEquipmentButtonModal').closest('.modal').attr('caller-id');
-      window.location = $('#'.concat(caller)).attr('href');
-    })
-  </script>
-
-<!-- Modal Close Equipment -->
-<script type="text/javascript"> 
-  $(document).on('click', '.confirm-close-equipment', function(){
-    $('#confirmCloseEquipmentModal').attr('caller-id', $(this).attr('id'));
-  })
-  $(document).on('click', '#confirmCloseEquipmentButtonModal', function(){
-    var caller = $('#confirmCloseEquipmentButtonModal').closest('.modal').attr('caller-id');
-    window.location = $('#'.concat(caller)).attr('href');
-  })
-</script>
-
 <!-- Modal Delete Equipment -->
 <script type="text/javascript"> 
     $(document).on('click', '.confirm-delete-equipment', function(){
@@ -200,17 +173,6 @@
       window.location = $('#'.concat(caller)).attr('href');
     })
   </script>
-
-<!-- Modal Delete Action -->
-<script type="text/javascript"> 
-  $(document).on('click', '.confirm-delete-ticket', function(){
-    $('#confirmDeleteActionModal').attr('caller-id', $(this).attr('id'));
-  })
-  $(document).on('click', '#confirmDeleteActionButtonModal', function(){
-    var caller = $('#confirmDeleteActionButtonModal').closest('.modal').attr('caller-id');
-    window.location = $('#'.concat(caller)).attr('href');
-  })
-</script>
 
 <!-- Close Tabs -->
 <script type="text/javascript"> 
