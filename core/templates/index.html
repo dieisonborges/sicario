@@ -8,6 +8,9 @@
 
         <!-- Small boxes (Stat box) -->
         <div class="row">
+
+          <h1 class="m-0 text-dark col-md-12 m-2">Dashboard</h1>
+
           <div class="col-lg-3 col-6">
             <!-- small box -->
             <div class="small-box bg-info">
@@ -36,11 +39,98 @@
             </div>
           </div>
           <!-- ./col -->
+
+          <div class="col-lg-3 col-6">
+            <!-- small box -->
+            <div class="small-box bg-success">
+              <div class="inner">
+                <h3>{{tickets_count_close}}</h3>
+                <p>Equipamentos</p>
+              </div>
+              <div class="icon">
+                <i class="fas fa-tasks"></i>
+              </div>
+              <a href="{% url 'tickets:index_tickets' %}" class="small-box-footer">Mais info <i class="fas fa-arrow-circle-right"></i></a>
+            </div>
+          </div>
+          <!-- ./col -->
           
         </div>
         <!-- /.row -->
 
         <div class="row">
+          <h1 class="m-0 text-dark col-md-12 m-2">Situação Geral</h1>
+
+            
+            {% for equipment in equipments_danger %}
+              <div class="col-12 col-sm-6 col-md-4">
+                <div class="info-box">          
+                  <a href="{% url 'equipments:read_equipment' equipment.pk %}" class="info-box-icon bg-{{equipment.status}} elevation-1">
+                      <i class="{{equipment.icon}}"></i>
+                  </a>
+                  <div class="info-box-content">
+                    <span class="info-box-text ">{{equipment.name|slice:":30"}}</span>
+                    <span class="info-box-number">
+                      <span class="badge badge-{{equipment.status}}">
+                        {{equipment.get_status_display}}
+                      </span>
+                    </span>
+                  </div>
+                  <!-- /.info-box-content -->
+                </div>
+                <!-- /.info-box -->
+              </div>
+            {% endfor %}  
+            <div class="col-md-12"></div>            
+            
+            {% for equipment in equipments_warning %}
+              <div class="col-12 col-sm-6 col-md-4">
+                <div class="info-box">          
+                  <a href="{% url 'equipments:read_equipment' equipment.pk %}" class="info-box-icon bg-{{equipment.status}} elevation-1">
+                      <i class="{{equipment.icon}}"></i>
+                  </a>
+                  <div class="info-box-content">
+                    <span class="info-box-text ">{{equipment.name|slice:":30"}}</span>
+                    <span class="info-box-number">
+                      <span class="badge badge-{{equipment.status}}">
+                        {{equipment.get_status_display}}
+                      </span>
+                    </span>
+                  </div>
+                  <!-- /.info-box-content -->
+                </div>
+                <!-- /.info-box -->
+              </div>
+            {% endfor %} 
+            <div class="col-md-12"></div>
+
+            {% for equipment in equipments_success %}
+              <div class="col-12 col-sm-6 col-md-4">
+                <div class="info-box">          
+                  <a href="{% url 'equipments:read_equipment' equipment.pk %}" class="info-box-icon bg-{{equipment.status}} elevation-1">
+                      <i class="{{equipment.icon}}"></i>
+                  </a>
+                  <div class="info-box-content">
+                    <span class="info-box-text ">{{equipment.name|slice:":30"}}</span>
+                    <span class="info-box-number">
+                      <span class="badge badge-{{equipment.status}}">
+                        {{equipment.get_status_display}}
+                      </span>
+                    </span>
+                  </div>
+                  <!-- /.info-box-content -->
+                </div>
+                <!-- /.info-box -->
+              </div>
+            {% endfor %} 
+             
+
+
+        </div>
+        <!-- Main row -->
+
+        <div class="row">
+          <h1 class="m-0 text-dark col-md-12 m-2">Tickets</h1>
           <div class="col-md-12">
             <div class="card card-default">
               <div class="card-header">
@@ -81,78 +171,11 @@
             <!-- /.card -->
           </div>
         </div>
+
+        
         
 
-        <div class="row">
-          <h1 class="m-0 text-dark col-md-12 m-2">Situação Geral</h1>
-
-            
-            {% for equipment in equipments_danger %}
-              <div class="col-12 col-sm-6 col-md-4">
-                <div class="info-box">          
-                  <a href="{% url 'equipments:read_equipment' equipment.pk %}" class="info-box-icon bg-{{equipment.status}} elevation-1">
-                      <i class="fas fa-satellite-dish"></i>
-                  </a>
-                  <div class="info-box-content">
-                    <span class="info-box-text ">{{equipment.name|slice:":30"}}</span>
-                    <span class="info-box-number">
-                      <span class="badge badge-{{equipment.status}}">
-                        {{equipment.get_status_display}}
-                      </span>
-                    </span>
-                  </div>
-                  <!-- /.info-box-content -->
-                </div>
-                <!-- /.info-box -->
-              </div>
-            {% endfor %}  
-            <div class="col-md-12"></div>            
-            
-            {% for equipment in equipments_warning %}
-              <div class="col-12 col-sm-6 col-md-4">
-                <div class="info-box">          
-                  <a href="{% url 'equipments:read_equipment' equipment.pk %}" class="info-box-icon bg-{{equipment.status}} elevation-1">
-                      <i class="fas fa-satellite-dish"></i>
-                  </a>
-                  <div class="info-box-content">
-                    <span class="info-box-text ">{{equipment.name|slice:":30"}}</span>
-                    <span class="info-box-number">
-                      <span class="badge badge-{{equipment.status}}">
-                        {{equipment.get_status_display}}
-                      </span>
-                    </span>
-                  </div>
-                  <!-- /.info-box-content -->
-                </div>
-                <!-- /.info-box -->
-              </div>
-            {% endfor %} 
-            <div class="col-md-12"></div>
-
-            {% for equipment in equipments_success %}
-              <div class="col-12 col-sm-6 col-md-4">
-                <div class="info-box">          
-                  <a href="{% url 'equipments:read_equipment' equipment.pk %}" class="info-box-icon bg-{{equipment.status}} elevation-1">
-                      <i class="fas fa-satellite-dish"></i>
-                  </a>
-                  <div class="info-box-content">
-                    <span class="info-box-text ">{{equipment.name|slice:":30"}}</span>
-                    <span class="info-box-number">
-                      <span class="badge badge-{{equipment.status}}">
-                        {{equipment.get_status_display}}
-                      </span>
-                    </span>
-                  </div>
-                  <!-- /.info-box-content -->
-                </div>
-                <!-- /.info-box -->
-              </div>
-            {% endfor %} 
-             
-
-
-        </div>
-        <!-- Main row -->
+        
         </div><!-- /.container-fluid -->
     </section>
     <!-- /.content -->

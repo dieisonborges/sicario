@@ -12,42 +12,41 @@
 
     <div class="card card-default">
         <div class="card-header">
-        <h3 class="card-title"><i class="fas fa-tasks"></i> Ação</h3>
+        <h3 class="card-title"><i class="fas fa-network-wired"></i> Conexão</h3>
         </div>
         <!-- /.card-header -->
         <!-- form start -->
         <form method="POST" action="." enctype="multipart/form-data">
         {% csrf_token %}
-        <input type="hidden" value="{{ ticket_id }}" name="ticket_id">
+        <input type="hidden" value="{{ equipment.pk }}" name="equipment_left">
         
         {{ form.non_field_errors }}
         <div class="card-body">
-            <div class="form-group">
-            {{ form.short_description.errors }}
-            <label for="{{ form.short_description.id_for_label }}">{{ form.short_description.label }}</label>                    
-            {% render_field form.short_description class+="form-control"  %}
+            
+            <div class="form-group">            
+                <label for="{{ form.description.id_for_label }}">{{ form.description.label }}</label>                    
+                {% render_field form.description class+="form-control"  %}
+                {{ form.description.errors }}
             </div>
-            <div class="form-group">
-            {{ form.description.errors }}
-            <label for="{{ form.description.id_for_label }}">{{ form.description.label }}</label>                    
-            {% render_field form.description class+="form-control"  %}
-            </div>  
-            <div class="form-group"> 
-            {{ form.docfile.errors }}
-            <label for="{{ form.docfile.id_for_label }}">{{ form.docfile.label }}</label>                    
-            {% render_field form.docfile class+="form-control-file"  %}
-            </div>
-            {{ form.time.errors }}
-            <label for="{{ form.time.id_for_label }}">{{ form.time.label }}</label>
-            <span id="set0hour" class="btn btn-default btn-xs">0h</span>
-            <span id="set1hour" class="btn btn-default btn-xs">1h</span>
-            <span id="set2hour" class="btn btn-default btn-xs">2h</span>
-            <span id="set3hour" class="btn btn-default btn-xs">3h</span>
-            <span id="set4hour" class="btn btn-default btn-xs">4h</span>
-            <span id="set5hour" class="btn btn-default btn-xs">5h</span>   
-            <span id="set6hour" class="btn btn-default btn-xs">6h</span>              
-            {% render_field form.time class+="form-control-file" %}
-            </div>                
+
+            <div class="form-group">            
+                <label for="{{ form.equipment_left.id_for_label }}">{{ form.equipment_left.label }}</label>                    
+                <input type="text" disabled value="{{equipment.name}}" id="{{ form.equipment_left.id_for_label }}" class="form-control" >
+                {{ form.equipment_left.errors }}
+            </div> 
+
+            <div class="form-group">            
+                <label for="{{ form.direction.id_for_label }}">{{ form.direction.label }}</label>                    
+                {% render_field form.direction class+="form-control"  %}
+                {{ form.direction.errors }}
+            </div> 
+
+            <div class="form-group">            
+                <label for="{{ form.equipment_right.id_for_label }}">{{ form.equipment_right.label }}</label>                    
+                {% render_field form.equipment_right class+="form-control"  %}
+                {{ form.equipment_right.errors }}
+            </div> 
+                          
         </div>
         <!-- /.card-body -->
 

@@ -144,14 +144,158 @@
 
     </section>
     <!-- /.content -->
-  </div>
-       
-    <!-- Timelime example  -->
+  </div>      
+  <!-- Timelime example  -->
+
+  <div class="col-md-12">
+    <div class="card">
+      
+      <div class="card-header">
+        <h4 class="card-title m-0 text-xl"><b>Conexões</b>  </h4>
+      </div>
+      <div class="card-body">        
+        <div class="card-text">
+
+          <div class="row">
+            {% for connection in equipment.equipment_left.all %}
+
+              <div class="col-12 col-sm-6 col-md-4">
+                <div class="info-box">
+                  <span class="info-box-icon bg-{{connection.equipment_left.status}} elevation-1"><i class="fas fa-cog"></i></span>
+    
+                  <div class="info-box-content">
+                    <span class="info-box-number">{{connection.equipment_left}}</span>
+                  </div>
+                  <!-- /.info-box-content -->
+                </div>
+                <!-- /.info-box -->
+              </div>
+              <!-- /.col --> 
+
+              <div class="col-12 col-sm-6 col-md-4">
+                <div class="info-box">
+                  <span class="info-box-icon bg-secondary elevation-1">
+                    {% if connection.direction == "left" %}
+                      <i class="fas fa-arrow-left"></i>
+                    {% elif connection.direction == "right" %}
+                      <i class="fas fa-arrow-right"></i>
+                    {% elif connection.direction == "exchange" %}
+                      <i class="fas fa-exchange-alt"></i>
+                    {% endif %}                  
+                  </span>
+    
+                  <div class="info-box-content">
+                    <span class="info-box-text">{{connection.description}}</span>
+                    <span class="info-box-number">{{connection.get_direction_display}}</span>                    
+                  </div>
+                  <!-- /.info-box-content -->
+                </div>
+                <!-- /.info-box -->
+              </div>
+              <!-- /.col --> 
+
+              <div class="col-12 col-sm-6 col-md-4">
+                <div class="info-box">
+                  <span class="info-box-icon bg-{{connection.equipment_right.status}} elevation-1"><i class="fas fa-cog"></i></span>
+    
+                  <div class="info-box-content">
+                    <span class="info-box-number">{{connection.equipment_right}}</span>
+                  </div>
+                  <!-- /.info-box-content -->
+                </div>
+                <!-- /.info-box -->
+              </div>
+              <!-- /.col --> 
+
+
+              
+            {% endfor %}
+            
+          </div>     
+          
+          <div class="row">
+            
+            {% if equipment.equipment_right and equipment.equipment_left %}
+
+            <!-- 
+            <a href="{% url 'equipments:create_connection' equipment.pk %}" class="btn btn-info float-right m-1 col-md-2">
+              <i class="fas fa-network-wired"></i> Nenhuma Conexão
+            </a>
+            -->
+            
+              
+            {% endif %}
+              
+            {% for connection in equipment.equipment_right.all %}
+
+              <div class="col-12 col-sm-6 col-md-4">
+                <div class="info-box">
+                  <span class="info-box-icon bg-{{connection.equipment_left.status}} elevation-1"><i class="fas fa-cog"></i></span>
+    
+                  <div class="info-box-content">
+                    <span class="info-box-number">{{connection.equipment_left}}</span>
+                  </div>
+                  <!-- /.info-box-content -->
+                </div>
+                <!-- /.info-box -->
+              </div>
+              <!-- /.col --> 
+
+              <div class="col-12 col-sm-6 col-md-4">
+                <div class="info-box">
+                  <span class="info-box-icon bg-secondary elevation-1">
+                    {% if connection.direction == "left" %}
+                      <i class="fas fa-arrow-left"></i>
+                    {% elif connection.direction == "right" %}
+                      <i class="fas fa-arrow-right"></i>
+                    {% elif connection.direction == "exchange" %}
+                      <i class="fas fa-exchange-alt"></i>
+                    {% endif %}                  
+                  </span>
+    
+                  <div class="info-box-content">
+                    <span class="info-box-text">{{connection.description}}</span>
+                    <span class="info-box-number">{{connection.get_direction_display}}</span>                    
+                  </div>
+                  <!-- /.info-box-content -->
+                </div>
+                <!-- /.info-box -->
+              </div>
+              <!-- /.col --> 
+
+              <div class="col-12 col-sm-6 col-md-4">
+                <div class="info-box">
+                  <span class="info-box-icon bg-{{connection.equipment_right.status}} elevation-1"><i class="fas fa-cog"></i></span>
+    
+                  <div class="info-box-content">
+                    <span class="info-box-number">{{connection.equipment_right}}</span>
+                  </div>
+                  <!-- /.info-box-content -->
+                </div>
+                <!-- /.info-box -->
+              </div>
+              <!-- /.col --> 
+
+
+              
+            {% endfor %}
+            
+          </div> 
+
+
+        </div>              
+      </div>
+    </div>
+           
+</div>
+
+
     <div class="col-md-12"> 
         <div class="row">
             <div class="col-md-12">
-                <a href="{% url 'equipments:delete_equipment' equipment.pk %}" class="btn btn-danger float-right m-1 col-md-2 confirm-delete-equipment" data-toggle="modal" data-target="#confirmDeleteEquipmentModal" id="deleteButton-{{ equipment.id }}"><i class="far fa-trash-alt"></i> Excluir Equipamento</a>
-                <a href="{% url 'equipments:update_equipment' equipment.pk %}" class="btn btn-info float-right m-1 col-md-2"><i class="fas fa-edit"></i> Editar Equipamento</a>   
+              <a href="{% url 'equipments:delete_equipment' equipment.pk %}" class="btn btn-danger float-right m-1 col-md-2 confirm-delete-equipment" data-toggle="modal" data-target="#confirmDeleteEquipmentModal" id="deleteButton-{{ equipment.id }}"><i class="far fa-trash-alt"></i> Excluir Equipamento</a>
+              <a href="{% url 'equipments:update_equipment' equipment.pk %}" class="btn btn-info float-right m-1 col-md-2"><i class="fas fa-edit"></i> Editar Equipamento</a>   
+              <a href="{% url 'equipments:create_connection' equipment.pk %}" class="btn btn-info float-right m-1 col-md-2"><i class="fas fa-network-wired"></i> Nova Conexão</a>
             </div>
         </div>
     </div>

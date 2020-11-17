@@ -73,7 +73,7 @@ def create_equipment(request):
         form = EquipmentForm(request.POST, request.FILES)
         if form.is_valid():
             form.save()
-            form.save_m2m()
+            #form.save_m2m()
             messages.success(request, 'Adicionado com sucesso!')
             return HttpResponseRedirect(reverse('equipments:index_equipments'))
         else:
@@ -116,7 +116,10 @@ def delete_equipment(request, equipment_id):
 @login_required
 def create_connection(request, equipment_id):
     template_name = 'connections/create_update.html'
-    context = {}
+    equipment = get_object_or_404(Equipment, id=equipment_id)
+    context = {
+        'equipment': equipment,
+    }
     if request.method == 'POST':
         form = ConnectionForm(request.POST, request.FILES)
         if form.is_valid():

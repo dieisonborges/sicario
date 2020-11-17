@@ -11,4 +11,4 @@ class EquipmentForm(forms.ModelForm):
 class ConnectionForm(forms.ModelForm):
     class Meta:
         model = Connection        
-        fields = ('description', 'before', 'after')        
+        fields = ('description', 'direction', 'equipment_left', 'equipment_right')        

@@ -12,4 +12,7 @@ urlpatterns = [
     path('<int:equipment_id>/', views.read_equipment, name='read_equipment'),    
     path('editar/<int:equipment_id>/', views.update_equipment, name='update_equipment'),
     path('delete/<int:equipment_id>/', views.delete_equipment, name='delete_equipment'),
+
+    #Connections
+    path('<int:equipment_id>/conexao/criar/', views.create_connection, name='create_connection'),
 ]

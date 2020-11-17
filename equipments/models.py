@@ -28,21 +28,30 @@ class Equipment(models.Model):
         return self.name
 
 class Connection(models.Model):
-    description = models.CharField('Descrição', max_length=200)
-    before = models.ForeignKey(
+    CHOICE_DIRECTION = (
+        ('left', 'Recebe'),
+        ('right', 'Envia'),
+        ('exchange', 'Bi-direcional'),      
+    )
+    description = models.CharField('Descrição da Canalização', max_length=200)
+    #equipments = models.ManyToManyField(Equipment, related_name='connections')
+    equipment_left = models.ForeignKey(
         Equipment,
             on_delete=models.CASCADE,
-            related_name = "before",
+            related_name = "equipment_left",
+            verbose_name = "Equipamento",
             blank=True,
-            null=True
+            null=True,
         )
-    after = models.ForeignKey(
+    equipment_right = models.ForeignKey(
         Equipment,
             on_delete=models.CASCADE,
-            related_name = "after",
+            related_name = "equipment_right",
+            verbose_name = "Equipamento Conectado",
             blank=True,
-            null=True
-        ) 
+            null=True,
+        )  
+    direction = models.CharField('Direção do Tráfego', max_length=8, choices=CHOICE_DIRECTION, default='left')
     created_at = models.DateTimeField('Criado em', auto_now_add=True)
     updated_at = models.DateTimeField('Alterado em', auto_now=True)
 
