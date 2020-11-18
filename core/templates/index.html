@@ -6,7 +6,6 @@
     <section class="content">
       <div class="container-fluid">
 
-        <!-- Small boxes (Stat box) -->
         <div class="row">
 
           <h1 class="m-0 text-dark col-md-12 m-2">Dashboard</h1>
@@ -58,6 +57,112 @@
         </div>
         <!-- /.row -->
 
+        <span class="btn btn-sm btn-default float-right m-1" id="actions_show"><i class="fas fa-plus"></i></span>
+                          <span class="btn btn-sm btn-default float-right m-1" id="actions_hide"><i class="fas fa-minus"></i></span>
+                      
+
+        <div class="row"> 
+
+          <h1 class="m-0 text-dark col-md-12 m-2">Tickets Abertos</h1>
+
+          
+                
+
+          {% for ticket in tickets_open %}
+
+          <div class="col-md-4">
+            
+            <div class="card card-outline card-danger direct-chat direct-chat-secondary collapsed-card actions">
+              <div class="card-header">
+                <h3 class="card-title">
+                  <b>{{ ticket.short_description | slice:30 }}</b><br>
+                  <small>Aberto em: <b>{{ticket.created_at|date:"d M Y - D"}}</b></small><br>
+                  <small>Prazo: <b>{{ticket.deadline|date:"d M Y - D"}}</b></small>
+                </h3>
+    
+                <div class="card-tools">
+                  <span data-toggle="tooltip" title="Ações" class="badge bg-danger">{{ticket.actions.count}}</span>
+                  <button type="button" class="btn btn-tool" data-card-widget="collapse"><i class="fas fa-minus"></i>
+                  </button>
+                </div>
+              </div>
+              <!-- /.card-header -->
+              <div class="card-body">
+                <!-- Conversations are loaded here -->
+                <div class="direct-chat-messages">
+                  <!-- Message. Default to the left -->
+                  <div class="direct-chat-msg">
+                    <div class="direct-chat-infos clearfix">
+                      <span class="direct-chat-name float-left">{{ ticket.user.first_name }}</span>
+                      <span class="direct-chat-timestamp float-right">{{ ticket.created_at }}</span>
+                    </div>
+                    <!-- /.direct-chat-infos -->
+                    {% if ticket.user.profile.photo %}
+                      <img class="direct-chat-img" src="{{ ticket.user.profile.photo.url }}" alt="{{ ticket.user.username }}">
+                    {% else %}
+                      <i class="far fa-user direct-chat-img"></i>
+                    {% endif %}
+
+                    <!-- /.direct-chat-img -->
+                    <div class="direct-chat-text">
+                      {{ ticket.description }}
+                    </div>
+                    <!-- /.direct-chat-text -->
+                  </div>
+                  <!-- /.direct-chat-msg -->
+
+                  
+                  {% if ticket.actions.count > 0 %}                  
+                    {% for action in ticket.actions.all %}
+                    <!-- Message to the right -->
+                    <div class="direct-chat-msg right">
+                      <div class="direct-chat-infos clearfix">
+                        <span class="direct-chat-name float-right">{{action.user.first_name}}</span>
+                        <span class="direct-chat-timestamp float-left">{{ action.created_at }}</span>
+                      </div>
+                      <!-- /.direct-chat-infos -->
+                      {% if action.user.profile.photo %}
+                        <img class="direct-chat-img" src="{{ action.user.profile.photo.url }}" alt="{{ action.user.username }}">
+                      {% else %}
+                        <i class="far fa-user direct-chat-img"></i>
+                      {% endif %}
+                      <!-- /.direct-chat-img -->
+                      <div class="direct-chat-text">
+                        <b>{{ action.short_description }}</b>
+                        <small>
+                          {{ action.description }}
+                        </small>
+                      </div>
+                      <!-- /.direct-chat-text -->
+                    </div>
+                    <!-- /.direct-chat-msg -->
+                    {% endfor %}
+                  {% else %}
+
+                    <span class="badge badge-light text-lg float-right">Nenhuma ação</span>
+                    
+                  {% endif %}
+
+                </div>
+                <!--/.direct-chat-messages-->    
+                
+              </div>
+              <!-- /.card-body -->
+              <div class="card-footer">
+                <a href="{% url 'tickets:read_ticket' ticket.pk %}" class="btn btn-secondary float-right">Detalhes</a>
+              </div>
+              <!-- /.card-footer-->
+            </div>
+
+          </div>
+
+          
+
+          {% endfor %} 
+
+        </div>        
+        
+
         <div class="row">
           <h1 class="m-0 text-dark col-md-12 m-2">Situação Geral</h1>
 
@@ -101,29 +206,7 @@
                 </div>
                 <!-- /.info-box -->
               </div>
-            {% endfor %} 
-            <div class="col-md-12"></div>
-
-            {% for equipment in equipments_success %}
-              <div class="col-12 col-sm-6 col-md-4">
-                <div class="info-box">          
-                  <a href="{% url 'equipments:read_equipment' equipment.pk %}" class="info-box-icon bg-{{equipment.status}} elevation-1">
-                      <i class="{{equipment.icon}}"></i>
-                  </a>
-                  <div class="info-box-content">
-                    <span class="info-box-text ">{{equipment.name|slice:":30"}}</span>
-                    <span class="info-box-number">
-                      <span class="badge badge-{{equipment.status}}">
-                        {{equipment.get_status_display}}
-                      </span>
-                    </span>
-                  </div>
-                  <!-- /.info-box-content -->
-                </div>
-                <!-- /.info-box -->
-              </div>
-            {% endfor %} 
-             
+            {% endfor %}  
 
 
         </div>
@@ -162,7 +245,7 @@
                      {% endfor %}
                   </div>                    
                
-                  <a href="{% url 'tickets:read_ticket' ticket.pk %}" class="btn btn-secondary btn-sm text-white text-decoration-none">Detalhes</a>
+                  
                 </div>
                 {% endfor %} 
               </div>
@@ -180,4 +263,21 @@
     </section>
     <!-- /.content -->
 
-{% endblock %}
+{% endblock content %}
+
+{% block scripts %}
+<!-- Close Tabs -->
+<script type="text/javascript"> 
+
+  //Open All
+  $("#actions_show").click(function(){
+    $('.actions').collapse('show')
+  });
+
+  //Close All
+  $("#actions_hide").click(function(){
+    $('.actions').collapse('hide')
+  }); 
+</script>
+
+{% endblock scripts %}
